@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.navigateLinks a {
+  text-decoration: none;
+}
+
+.targetEffect a {
+  padding: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  -webkit-transition: 0.3s ease-out;
+  -moz-transition: 0.3s ease-out;
+  transition: 0.3s ease-out;
+}
+
+.targetEffect a span:before {
+  width: 5px;
+  height: 5px;
+  background: transparent;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-top: 2px solid #218c74;
+  border-left: 2px solid #218c74;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.targetEffect a span:after {
+  width: 6px;
+  height: 6px;
+  background: transparent;
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border-right: 2px solid #218c74;
+  border-bottom: 2px solid #218c74;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.targetEffect a:before {
+  width: 6px;
+  height: 6px;
+  background: transparent;
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-right: 2px solid #218c74;
+  border-top: 2px solid #218c74;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.targetEffect a:after {
+  width: 6px;
+  height: 6px;
+  background: transparent;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-left: 2px solid #218c74;
+  border-bottom: 2px solid #218c74;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.targetEffect a:hover {
+  color: #218c74;
+}
+
+.targetEffect a:hover:before {
+  opacity: 1;
+  right: 5px;
+  top: 5px;
+}
+
+.targetEffect a:hover:after {
+  opacity: 1;
+  left: 5px;
+  bottom: 5px;
+}
+
+.targetEffect a:hover span:before {
+  opacity: 1;
+  left: 5px;
+  top: 5px;
+}
+
+.targetEffect a:hover span:after {
+  opacity: 1;
+  right: 5px;
+  bottom: 5px;
+}
