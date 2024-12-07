@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import Header from "../components/Header";
 const Home = () => {
-  const heading = "E-Trading System";
+  const heading = "UniTrade";
 
   return (
     <>
