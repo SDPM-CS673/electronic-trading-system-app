@@ -4,9 +4,9 @@ const flash = require('connect-flash');
 const passport = require('passport');
 var path = require('path');
 const dotenv = require('dotenv');
-const authRoutes = require('./routes/authRoutes');
-const initializePassport = require('./config/passport-config');
-const {sessionStore} = require('./config/db');
+const authRoutes = require('./routes/authRoutes.cjs');
+const initializePassport = require('./config/passport-config.cjs');
+const {sessionStore} = require('./config/db.cjs');
 
 dotenv.config();
 

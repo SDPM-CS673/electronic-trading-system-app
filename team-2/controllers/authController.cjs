@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { createUser, getUserByName } = require('../models/userModel');
+const { createUser, getUserByName } = require('../models/userModel.cjs');
 const validator = require('validator');
 
 const renderLogin = (req, res) => {

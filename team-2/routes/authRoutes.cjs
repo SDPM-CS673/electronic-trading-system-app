@@ -1,8 +1,8 @@
 const express = require('express');
 const passport = require('passport');
 const { renderLogin, renderRegister, handleRegister, handleLogout,
-        renderOrders, renderMarketplace, renderWallet, renderTransactions, renderDashboard} = require('../controllers/authController');
-const ensureAuthenticated = require('../middleware/ensureAuth');
+        renderOrders, renderMarketplace, renderWallet, renderTransactions, renderDashboard} = require('../controllers/authController.cjs');
+const ensureAuthenticated = require('../middleware/ensureAuth.cjs');
 
 const router = express.Router();
 
