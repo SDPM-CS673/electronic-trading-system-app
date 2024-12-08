@@ -15,7 +15,10 @@
   justify-items: center;
   min-height: 100svh;
   padding: 80px;
+<<<<<<< HEAD
   grid-gap: 64px;
+=======
+>>>>>>> 049d1692a0cc19f0edff6f890dc88263360cf39a
   gap: 64px;
   font-family: var(--font-geist-sans);
 }

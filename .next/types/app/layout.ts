@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // File: D:\MSCS\SEM3\SDPM\Project\Code\electronic-trading-system-app\src\app\layout.js
+=======
+// File: /Users/jyotiraditya/Desktop/electronic-trading-system-app/src/app/layout.js
+>>>>>>> 049d1692a0cc19f0edff6f890dc88263360cf39a
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
