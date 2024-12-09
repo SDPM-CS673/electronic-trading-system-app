@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { post, get } from "../services/api-call.service";
+import { use } from 'passport';
 
 const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory }) => {
   const [categoryName, setCategoryName] = useState('');
@@ -7,8 +9,6 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
     attribute2: '',
     attribute3: '',
     attribute4: '',
-    attribute5: '',
-    attribute6: '',
   });
   const [status, setStatus] = useState('Active');
 
@@ -21,10 +21,40 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
   }, [isEdit, categoryData]);
 
   const handleSave = () => {
-    const newCategory = { id: categoryData ? categoryData.id : Date.now(), categoryName, attributes, status };
-    saveCategory(newCategory);
-    closeModal();
+    const statusPayload = status === 'Active' ? 'A' : 'I';
+    const category = { id: categoryData ? categoryData.id : '', name:categoryName, attribute1: attributes.attribute1, attribute2: attributes.attribute2, attribute3: attributes.attribute3, attribute4: attributes.attribute4, status: statusPayload };
+    if (isEdit) {
+      console.log('Edit Category', category);
+      useEffect(() => {
+        post('/api/categories', category, 'http://localhost:3000')
+          .then((response) => {
+            console.log(response);
+            saveCategory(category);
+            closeModal();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }, [])
+    } else {
+      console.log('Save Category', category);
+      useEffect(() => {
+        post('/api/category/:id', { categoryName, attributes, status }, 'http://localhost:3000')
+          .then((response) => {
+            console.log(response);
+            saveCategory(category);
+            closeModal();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }, [])
+    }
+
   };
+
+
+
 
   const handleReset = () => {
     setCategoryName('');
@@ -33,8 +63,6 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
       attribute2: '',
       attribute3: '',
       attribute4: '',
-      attribute5: '',
-      attribute6: '',
     });
     setStatus('Active');
   };
@@ -60,7 +88,7 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
           />
         </div>
 
-        <div className="grid grid-cols-3 gap-6 mt-6">
+        <div className="grid grid-cols-2 gap-6 mt-6">
           {Object.keys(attributes).map((key, index) => (
             <div key={index} className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">{`Attribute ${index + 1}`}</label>

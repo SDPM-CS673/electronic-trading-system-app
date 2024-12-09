@@ -34,7 +34,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               </a>
             </li>
             <li>
-              <a href="#contact" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
+              <a href="/contact" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
                 {isOpen ? <span className="flex flex-row"> <FaEnvelope size={20} /><span  className="pl-4">Market Data</span> </span> : <FaEnvelope size={20} />}
               </a>
             </li>

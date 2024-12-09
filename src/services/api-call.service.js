@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const apiOrigin = "http://localhost:7001";
+const team1Origin = "http://localhost:3000";
 
 /**
  * Makes a GET request to the specified URL.
