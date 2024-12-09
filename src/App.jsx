@@ -7,7 +7,7 @@ import Header from "./components/landing-page/Header/page";
 import Footer from "./components/landing-page/Footer/page";
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(true); // Sidebar is initially open
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Sidebar is initially close
 
   const toggleSidebar = () => {
     setSidebarOpen((prevState) => !prevState);

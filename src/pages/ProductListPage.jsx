@@ -12,11 +12,13 @@ const ProductListPage = () => {
   console.log(categories);  // Check the categories data being passed
 
   return (
-    <div className="bg-gray-200 text-white min-h-screen p-6">
+    <div className="bg-gray-200 text-white min-h-screen w-full p-6">
       <h1 className="text-4xl font-bold text-black mb-8">Product Categories</h1>
-      {categories.map(category => (
-        <CategorySection key={category.id} title={category.name} products={category.products} />
-      ))}
+      <div className="max-w-screen-xl mx-auto">
+        {categories.map(category => (
+          <CategorySection key={category.id} title={category.name} products={category.products} />
+        ))}
+      </div>
     </div>
   );
 };

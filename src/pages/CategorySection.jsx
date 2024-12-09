@@ -51,4 +51,4 @@ const CategorySection = ({ title, products }) => {
   );
 };
 
-export default CategorySection;  // Ensure CategorySection is exported
+export default CategorySection;  
