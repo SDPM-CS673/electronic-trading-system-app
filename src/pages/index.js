@@ -3,16 +3,18 @@ import Login from "./Login";
 import Register from "./Register";
 import Category from "./Category";
 import AddNewCategoryModal from "./AddNewCategoryModal";
-import ProdcutListPage from "./ProductListPage";
+import ProductListPage from "./ProductListPage";
 import ProductCard from "./ProductCard";
 import CategorySection from "./CategorySection";
+import Sidebar from "./Sidebar";
 export {
   Home,
   Login,
   Register,
   Category,
   AddNewCategoryModal,
-  ProdcutListPage,
+  ProductListPage,
   ProductCard,
-  CategorySection
+  CategorySection,
+  Sidebar,
 };

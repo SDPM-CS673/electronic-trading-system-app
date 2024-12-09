@@ -27,24 +27,24 @@ module.exports = withMT({
         background: "hsl(0, 0%, 98%)",  // Very light gray background
         foreground: "hsl(0, 0%, 10%)",  // Dark text/foreground color
         primary: {
-          DEFAULT: "hsl(210, 100%, 50%)",  // Primary blue color
+          DEFAULT: "hsl(210, 100%, 50%)",  // Blue color
           foreground: "hsl(210, 100%, 90%)",  // Lighter blue for text
         },
-        secondary: {
-          DEFAULT: "hsl(30, 100%, 50%)",  // Secondary orange color
-          foreground: "hsl(30, 100%, 90%)",  // Lighter orange for text
+        warning: {
+          DEFAULT: "hsl(45, 100%, 60%)",  // Yellow color (warning)
+          foreground: "hsl(45, 100%, 90%)",  // Lighter yellow for text
         },
-        destructive: {
-          DEFAULT: "hsl(0, 100%, 50%)",  // Destructive red color
+        danger: {
+          DEFAULT: "hsl(0, 100%, 50%)",  // Red color (danger)
           foreground: "hsl(0, 100%, 90%)",  // Lighter red for text
         },
         muted: {
-          DEFAULT: "hsl(0, 0%, 80%)",  // Muted gray color
-          foreground: "hsl(0, 0%, 40%)",  // Darker gray for muted text
+          DEFAULT: "hsl(210, 10%, 80%)",  // Muted blue-gray
+          foreground: "hsl(210, 10%, 40%)",  // Darker gray for muted text
         },
         accent: {
-          DEFAULT: "hsl(150, 100%, 50%)",  // Accent green color
-          foreground: "hsl(150, 100%, 90%)",  // Lighter green for text
+          DEFAULT: "hsl(150, 50%, 50%)",  // Green color (complementary to red and blue)
+          foreground: "hsl(150, 50%, 90%)",  // Lighter green for text
         },
         popover: {
           DEFAULT: "hsl(240, 100%, 30%)",  // Popover dark blue color
@@ -56,10 +56,10 @@ module.exports = withMT({
         },
         chart: {
           "1": "hsl(0, 100%, 50%)",  // Chart color 1 (red)
-          "2": "hsl(30, 100%, 50%)",  // Chart color 2 (orange)
-          "3": "hsl(60, 100%, 50%)",  // Chart color 3 (yellow)
+          "2": "hsl(45, 100%, 60%)",  // Chart color 2 (yellow)
+          "3": "hsl(60, 100%, 50%)",  // Chart color 3 (yellow-green)
           "4": "hsl(120, 100%, 50%)",  // Chart color 4 (green)
-          "5": "hsl(240, 100%, 50%)",  // Chart color 5 (blue)
+          "5": "hsl(210, 100%, 50%)",  // Chart color 5 (blue)
         },
       },
       // Border radius customization
@@ -88,5 +88,4 @@ module.exports = withMT({
     require("tailwindcss-animate"),
     require('tailwind-scrollbar-hide'),
   ],  // Add the Tailwind Animate plugin
-  
 });
