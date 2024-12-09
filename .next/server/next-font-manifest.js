@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{},\"appUsingSizeAdjust\":false,\"pagesUsingSizeAdjust\":false}"
-=======
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/jyotiraditya/Desktop/electronic-trading-system-app/src/app/layout\":[\"static/media/463dafcda517f24f-s.p.woff\",\"static/media/4473ecc91f70f139-s.p.woff\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"
->>>>>>> 049d1692a0cc19f0edff6f890dc88263360cf39a
