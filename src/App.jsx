@@ -1,31 +1,65 @@
-import "./App.css";
-import { Routes, Route } from "react-router-dom";
-import { routeGroups } from "./routes";
-import * as Pages from "./pages";
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";  // Ensure correct imports
+import * as Pages from "./pages";  // Import everything from pages/index.js
+import { routeGroups } from "./routes"; // Import your routeGroups
+import Sidebar from "./pages/Sidebar";  // Import Sidebar correctly
+import Header from "./components/landing-page/Header/page";
+import Footer from "./components/landing-page/Footer/page";
 
 function App() {
-  const renderRoutes = (routes, parentPath = "") =>
-    routes.map(({ path, component, children, parameters }) => {
-      const ComponentToRender = Pages[component];
-      const paramRoute = parameters?.length > 0 ? `/:${parameters.join("/:")}` : null;
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Sidebar is initially close
+
+  const toggleSidebar = () => {
+    setSidebarOpen((prevState) => !prevState);  // Toggle Sidebar
+  };
+
+  // Render routes dynamically
+  const renderRoutes = (routes, parentPath = "") => {
+    return routes.map(({ path, component, children, parameters }) => {
+      const ComponentToRender = Pages[component];  // Dynamically access component
+
+      // If component is not found, log an error
+      if (!ComponentToRender) {
+        console.error(`Component ${component} not found in Pages.`);
+        return null;
+      }
+
+      const paramRoute = parameters?.length > 0 ? `/:${parameters.join("/:")}` : "";
+
       return children ? (
         <Route key={path} path={`${parentPath}${path}`}>
           {renderRoutes(children, `${parentPath}${path}/`)}
         </Route>
       ) : (
-        <Route key={path} path={paramRoute ? `${parentPath}${path}${paramRoute}` : `${parentPath}${path}` } element={<ComponentToRender />} />
+        <Route
+          key={path}
+          path={paramRoute ? `${parentPath}${path}${paramRoute}` : `${parentPath}${path}`}
+          element={<ComponentToRender />} // Dynamically render the component
+        />
       );
     });
+  };
 
   return (
-    <div className="w-full flex h-svh max-h-svh">
-      {/* <Sidebar items={sidebarItems} /> */}
-      <div className="h-full flex-1">
-        <Routes>
-          {renderRoutes(routeGroups)}
-        </Routes>
+    <>
+      <div className="flex flex-1 min-h-screen">
+        {/* Sidebar */}
+        <Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />
+
+        {/* Main Content Area */}
+        <div className={`flex-1 ml-${sidebarOpen ? '64' : '20'} flex-col h-screen w-full`}>
+          <div className={'h-[10%] '}>
+            <Header toggleSidebar={toggleSidebar} />
+          </div>
+          <div style={{ paddingLeft: sidebarOpen ? '12%' : '6%' }} className="h-[80%] px-4">
+            <Routes>{renderRoutes(routeGroups)}</Routes>  {/* Dynamically render routes */}
+          </div>
+          <div className={'h-[10%]'}>
+            <Footer />
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
