@@ -20,7 +20,7 @@ function App() {
 
       // If component is not found, log an error
       if (!ComponentToRender) {
-        console.error(`Component ${component} not found in Pages.`); 
+        console.error(`Component ${component} not found in Pages.`);
         return null;
       }
 
@@ -45,12 +45,18 @@ function App() {
       <div className="flex flex-1 min-h-screen">
         {/* Sidebar */}
         <Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />
-        
+
         {/* Main Content Area */}
-        <div className={`flex-1 ml-${sidebarOpen ? '64' : '20'}`}>
-          <Header toggleSidebar={toggleSidebar} />
-          <Routes>{renderRoutes(routeGroups)}</Routes>  {/* Dynamically render routes */}
-          <Footer />
+        <div className={`flex-1 ml-${sidebarOpen ? '64' : '20'} flex-col h-screen w-full`}>
+          <div className={'h-[10%] '}>
+            <Header toggleSidebar={toggleSidebar} />
+          </div>
+          <div style={{ paddingLeft: sidebarOpen ? '12%' : '6%' }} className="h-[80%] px-4">
+            <Routes>{renderRoutes(routeGroups)}</Routes>  {/* Dynamically render routes */}
+          </div>
+          <div className={'h-[10%]'}>
+            <Footer />
+          </div>
         </div>
       </div>
     </>
