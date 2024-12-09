@@ -7,6 +7,7 @@ import ProductListPage from "./ProductListPage";
 import ProductCard from "./ProductCard";
 import CategorySection from "./CategorySection";
 import Sidebar from "./Sidebar";
+
 export {
   Home,
   Login,
