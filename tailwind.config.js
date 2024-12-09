@@ -1,135 +1,92 @@
-// const withMT = require("@material-tailwind/react/utils/withMT");
- 
-// module.exports = withMT({
-//     darkMode: ["class"],
-//     content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
-//   theme: {
-//   	extend: {
-//   		borderRadius: {
-//   			lg: 'var(--radius)',
-//   			md: 'calc(var(--radius) - 2px)',
-//   			sm: 'calc(var(--radius) - 4px)'
-//   		},
-//   		colors: {
-//   			background: 'hsl(var(--background))',
-//   			foreground: 'hsl(var(--foreground))',
-//   			card: {
-//   				DEFAULT: 'hsl(var(--card))',
-//   				foreground: 'hsl(var(--card-foreground))'
-//   			},
-//   			popover: {
-//   				DEFAULT: 'hsl(var(--popover))',
-//   				foreground: 'hsl(var(--popover-foreground))'
-//   			},
-//   			primary: {
-//   				DEFAULT: 'hsl(var(--primary))',
-//   				foreground: 'hsl(var(--primary-foreground))'
-//   			},
-//   			secondary: {
-//   				DEFAULT: 'hsl(var(--secondary))',
-//   				foreground: 'hsl(var(--secondary-foreground))'
-//   			},
-//   			muted: {
-//   				DEFAULT: 'hsl(var(--muted))',
-//   				foreground: 'hsl(var(--muted-foreground))'
-//   			},
-//   			accent: {
-//   				DEFAULT: 'hsl(var(--accent))',
-//   				foreground: 'hsl(var(--accent-foreground))'
-//   			},
-//   			destructive: {
-//   				DEFAULT: 'hsl(var(--destructive))',
-//   				foreground: 'hsl(var(--destructive-foreground))'
-//   			},
-//   			border: 'hsl(var(--border))',
-//   			input: 'hsl(var(--input))',
-//   			ring: 'hsl(var(--ring))',
-//   			chart: {
-//   				'1': 'hsl(var(--chart-1))',
-//   				'2': 'hsl(var(--chart-2))',
-//   				'3': 'hsl(var(--chart-3))',
-//   				'4': 'hsl(var(--chart-4))',
-//   				'5': 'hsl(var(--chart-5))'
-//   			}
-//   		}
-//   	}
-//   },
-//   plugins: [require("tailwindcss-animate")],
-// });
+const withMT = require("@material-tailwind/react/utils/withMT");
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-	darkMode: ["class"],
-	content: [
-	  './pages/**/*.{ts,tsx}',
-	  './components/**/*.{ts,tsx}',
-	  './app/**/*.{ts,tsx}',
-	  './src/**/*.{ts,tsx}',
-	],
-	theme: {
-	  container: {
-		center: true,
-		padding: "2rem",
-		screens: {
-		  "2xl": "1400px",
-		},
-	  },
-	  extend: {
-		colors: {
-		  border: "hsl(var(--border))",
-		  input: "hsl(var(--input))",
-		  ring: "hsl(var(--ring))",
-		  background: "hsl(var(--background))",
-		  foreground: "hsl(var(--foreground))",
-		  primary: {
-			DEFAULT: "hsl(var(--primary))",
-			foreground: "hsl(var(--primary-foreground))",
-		  },
-		  secondary: {
-			DEFAULT: "hsl(var(--secondary))",
-			foreground: "hsl(var(--secondary-foreground))",
-		  },
-		  destructive: {
-			DEFAULT: "hsl(var(--destructive))",
-			foreground: "hsl(var(--destructive-foreground))",
-		  },
-		  muted: {
-			DEFAULT: "hsl(var(--muted))",
-			foreground: "hsl(var(--muted-foreground))",
-		  },
-		  accent: {
-			DEFAULT: "hsl(var(--accent))",
-			foreground: "hsl(var(--accent-foreground))",
-		  },
-		  popover: {
-			DEFAULT: "hsl(var(--popover))",
-			foreground: "hsl(var(--popover-foreground))",
-		  },
-		  card: {
-			DEFAULT: "hsl(var(--card))",
-			foreground: "hsl(var(--card-foreground))",
-		  },
-		},
-		borderRadius: {
-		  lg: "var(--radius)",
-		  md: "calc(var(--radius) - 2px)",
-		  sm: "calc(var(--radius) - 4px)",
-		},
-		keyframes: {
-		  "accordion-down": {
-			from: { height: 0 },
-			to: { height: "var(--radix-accordion-content-height)" },
-		  },
-		  "accordion-up": {
-			from: { height: "var(--radix-accordion-content-height)" },
-			to: { height: 0 },
-		  },
-		},
-		animation: {
-		  "accordion-down": "accordion-down 0.2s ease-out",
-		  "accordion-up": "accordion-up 0.2s ease-out",
-		},
-	  },
-	},
-	plugins: [require("tailwindcss-animate")],
-  }
+module.exports = withMT({
+  darkMode: ["class"],  // Enables dark mode based on a class toggle
+  content: [
+    "./index.html", 
+    "./src/**/*.{vue,js,ts,jsx,tsx}", 
+    "./pages/**/*.{ts,tsx}", 
+    "./components/**/*.{ts,tsx}", 
+    "./app/**/*.{ts,tsx}",  // Add all paths where Tailwind classes are used
+  ],
+  theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",  // Customize screen sizes for responsive layouts
+      },
+    },
+    extend: {
+      // Directly defining colors (not using CSS variables)
+      colors: {
+        border: "hsl(0, 0%, 90%)",  // Light gray border color
+        input: "hsl(0, 0%, 95%)",  // Light gray for inputs
+        ring: "hsl(0, 0%, 80%)",  // Lighter ring color
+        background: "hsl(0, 0%, 98%)",  // Very light gray background
+        foreground: "hsl(0, 0%, 10%)",  // Dark text/foreground color
+        primary: {
+          DEFAULT: "hsl(210, 100%, 50%)",  // Primary blue color
+          foreground: "hsl(210, 100%, 90%)",  // Lighter blue for text
+        },
+        secondary: {
+          DEFAULT: "hsl(30, 100%, 50%)",  // Secondary orange color
+          foreground: "hsl(30, 100%, 90%)",  // Lighter orange for text
+        },
+        destructive: {
+          DEFAULT: "hsl(0, 100%, 50%)",  // Destructive red color
+          foreground: "hsl(0, 100%, 90%)",  // Lighter red for text
+        },
+        muted: {
+          DEFAULT: "hsl(0, 0%, 80%)",  // Muted gray color
+          foreground: "hsl(0, 0%, 40%)",  // Darker gray for muted text
+        },
+        accent: {
+          DEFAULT: "hsl(150, 100%, 50%)",  // Accent green color
+          foreground: "hsl(150, 100%, 90%)",  // Lighter green for text
+        },
+        popover: {
+          DEFAULT: "hsl(240, 100%, 30%)",  // Popover dark blue color
+          foreground: "hsl(240, 100%, 80%)",  // Lighter blue for text
+        },
+        card: {
+          DEFAULT: "hsl(360, 100%, 95%)",  // Card background (light pink)
+          foreground: "hsl(360, 100%, 40%)",  // Card text color (darker pink)
+        },
+        chart: {
+          "1": "hsl(0, 100%, 50%)",  // Chart color 1 (red)
+          "2": "hsl(30, 100%, 50%)",  // Chart color 2 (orange)
+          "3": "hsl(60, 100%, 50%)",  // Chart color 3 (yellow)
+          "4": "hsl(120, 100%, 50%)",  // Chart color 4 (green)
+          "5": "hsl(240, 100%, 50%)",  // Chart color 5 (blue)
+        },
+      },
+      // Border radius customization
+      borderRadius: {
+        lg: "0.5rem",  // Large border radius
+        md: "0.375rem",  // Medium border radius
+        sm: "0.25rem",  // Small border radius
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: 0 },
+          to: { height: "var(--radix-accordion-content-height)" },  // Animation for accordion opening
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: 0 },  // Animation for accordion closing
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",  // Animation duration and easing for accordion
+      },
+    },
+  },
+  plugins: [
+    require("tailwindcss-animate"),
+    require('tailwind-scrollbar-hide'),
+  ],  // Add the Tailwind Animate plugin
+  
+});

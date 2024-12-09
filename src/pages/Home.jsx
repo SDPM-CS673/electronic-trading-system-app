@@ -1,5 +1,5 @@
 
-import LandingPage from "../components/landingpage";
+import LandingPage from "../components/landing-page";
 
 
 const Home = () => {
@@ -7,8 +7,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="w-full h-[calc(100vh-2rem)] overflow-y-auto">
-        {/* <Header heading={heading} /> */}
+      <div className="w-full h-full overflow-y-auto">
         <LandingPage />
       </div>
     </>

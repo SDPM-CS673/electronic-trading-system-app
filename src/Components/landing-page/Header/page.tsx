@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import Login from './Login'; // Assuming Login component is in a separate file
-import Register from './Register'; // Assuming Register component is in a separate file
+import { Link } from 'react-router-dom';
+import Login from '../../../pages/Login'; 
+import Register from '../../../pages/Register';
+
 
 const Header = () => {
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
@@ -8,16 +10,14 @@ const Header = () => {
 
   const toggleLoginModal = () => {
     setLoginModalOpen(!isLoginModalOpen);
-    setRegisterModalOpen(false); // Close Register modal if Login modal opens
   };
 
   const toggleRegisterModal = () => {
     setRegisterModalOpen(!isRegisterModalOpen);
-    setLoginModalOpen(false); // Close Login modal if Register modal opens
   };
 
   return (
-    <header className="bg-black shadow-md fixed w-full top-0 z-50">
+    <header className="bg-black shadow-md w-full top-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="text-2xl font-bold text-gray-300">
@@ -43,7 +43,7 @@ const Header = () => {
 
       {/* Login Modal */}
       {isLoginModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg w-full sm:w-96 relative">
             <button
               className="absolute top-2 right-2 text-xl font-bold"
@@ -51,7 +51,7 @@ const Header = () => {
             >
               X
             </button>
-            <Login toggleRegisterModal={toggleRegisterModal} />
+            <Login closeModal={toggleLoginModal} />
           </div>
         </div>
       )}
@@ -66,7 +66,7 @@ const Header = () => {
             >
               X
             </button>
-            <Register toggleLoginModal={toggleLoginModal} />
+            <Register closeModal={toggleRegisterModal} />
           </div>
         </div>
       )}
