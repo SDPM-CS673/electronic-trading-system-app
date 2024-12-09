@@ -1,22 +1,31 @@
 import React, { useState } from "react";
-import Sidebar from "./pages/Sidebar"; // Ensure the import path and name match your actual file
-import { Routes, Route } from "react-router-dom";
-import { routeGroups } from "./routes";
-import * as Pages from "./pages";
+import { Routes, Route } from "react-router-dom";  // Ensure correct imports
+import * as Pages from "./pages";  // Import everything from pages/index.js
+import { routeGroups } from "./routes"; // Import your routeGroups
+import Sidebar from "./pages/Sidebar";  // Import Sidebar correctly
 import Header from "./components/landing-page/Header/page";
 import Footer from "./components/landing-page/Footer/page";
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(true); // Sidebar is initially open
+  const [sidebarOpen, setSidebarOpen] = useState(false);  // Sidebar state
 
   const toggleSidebar = () => {
-    setSidebarOpen((prevState) => !prevState);
+    setSidebarOpen((prevState) => !prevState);  // Toggle Sidebar
   };
 
-  const renderRoutes = (routes, parentPath = "") =>
-    routes.map(({ path, component, children, parameters }) => {
-      const ComponentToRender = Pages[component];
-      const paramRoute = parameters?.length > 0 ? `/:${parameters.join("/:")}` : null;
+  // Render routes dynamically
+  const renderRoutes = (routes, parentPath = "") => {
+    return routes.map(({ path, component, children, parameters }) => {
+      const ComponentToRender = Pages[component];  // Dynamically access component
+
+      // If component is not found, log an error
+      if (!ComponentToRender) {
+        console.error(`Component ${component} not found in Pages.`); 
+        return null;
+      }
+
+      const paramRoute = parameters?.length > 0 ? `/:${parameters.join("/:")}` : "";
+
       return children ? (
         <Route key={path} path={`${parentPath}${path}`}>
           {renderRoutes(children, `${parentPath}${path}/`)}
@@ -25,26 +34,22 @@ function App() {
         <Route
           key={path}
           path={paramRoute ? `${parentPath}${path}${paramRoute}` : `${parentPath}${path}`}
-          element={<ComponentToRender />}
+          element={<ComponentToRender />} // Dynamically render the component
         />
       );
     });
+  };
 
   return (
     <>
-      <head>
-        <title>Stock Market Landing Page</title>
-        <meta name="description" content="Modern stock market trading platform" />
-        <link rel="icon" href="/favicon.ico" />
-      </head>
-      <div className="flex min-h-screen">
+      <div className="flex flex-1 min-h-screen">
         {/* Sidebar */}
         <Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />
         
         {/* Main Content Area */}
-        <div className={`flex-1 ml-${sidebarOpen ? "64" : "20"}`}> {/* Adjust content layout when sidebar is open/closed */}
+        <div className={`flex-1 ml-${sidebarOpen ? '64' : '20'}`}>
           <Header toggleSidebar={toggleSidebar} />
-          <Routes>{renderRoutes(routeGroups)}</Routes>
+          <Routes>{renderRoutes(routeGroups)}</Routes>  {/* Dynamically render routes */}
           <Footer />
         </div>
       </div>
