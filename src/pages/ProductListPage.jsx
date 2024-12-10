@@ -27,7 +27,7 @@ const ProductListPage = () => {
 
   const ProductCard = ({ product }) => {
     return (
-      <div className="bg-gray-800 rounded-lg shadow-md p-4 w-60 flex-shrink-0 transition-all hover:scale-105 hover:bg-gray-700">
+      <div className="bg-gray-800 rounded-lg shadow-md p-4 w-60 flex-shrink-0 transition-all hover:cursor-pointer">
         <h3 className="text-lg font-bold text-white mb-2">{product.name}</h3>
         <ul className="text-sm text-gray-300">
           {product.attributes &&
@@ -62,13 +62,13 @@ const ProductListPage = () => {
         <div className="relative">
           <button
             onClick={() => scroll("left")}
-            className="absolute left-0 top-0 transform translate-y-1/2 text-white p-4 rounded-full shadow-md  text-3xl transition-all hover:scale-110"
+            className="absolute left-0 bg-black top-0 transform translate-y-1/2 text-white p-4 rounded-full shadow-md  text-3xl transition-all hover:scale-110"
           >
             &lt;
           </button>
           <button
             onClick={() => scroll("right")}
-            className="absolute right-0 top-0 transform translate-y-1/2 text-white p-4 rounded-full shadow-md  text-3xl transition-all hover:scale-110"
+            className="absolute right-0 bg-black top-0 transform translate-y-1/2 text-white p-4 rounded-full shadow-md  text-3xl transition-all hover:scale-110"
           >
             &gt;
           </button>

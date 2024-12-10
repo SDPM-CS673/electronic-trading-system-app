@@ -54,10 +54,10 @@ function App() {
           <div className={'h-[10%] '}>
             <Header toggleSidebar={toggleSidebar} />
           </div>
-          <div style={{ paddingLeft: sidebarOpen ? '12%' : '6%' }} className="h-[90%] px-4 overflow-auto">
+          <div style={{ paddingLeft: sidebarOpen ? '12%' : '6%' }} className="h-[95%] px-4 overflow-auto">
             <Routes>{renderRoutes(routeGroups)}</Routes>  {/* Dynamically render routes */}
           </div>
-          <div className={'h-[10%]'}>
+          <div className={'h-[5%]'}>
             <Footer />
           </div>
         </div>

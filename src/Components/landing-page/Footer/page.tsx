@@ -1,8 +1,7 @@
 // components/Footer.js
-import { Link, NavLink } from "react-router-dom";
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-8 bottom-0">
+    <footer className="bg-gray-900 text-gray-300 py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <div>
@@ -35,7 +34,7 @@ const Footer = () => {
             </ul>
           </div>
         </div> */}
-        <div className="mt-8 text-center text-gray-400">
+        <div className="mt-2 text-center text-gray-400">
           &copy; {new Date().getFullYear()} UniTrade, Inc. All rights reserved.
         </div>
       </div>
