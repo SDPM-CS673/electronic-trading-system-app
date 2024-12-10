@@ -97,7 +97,7 @@ const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, cate
                 status: statusPayload,
             };
             console.log('Save Product', product);
-            post('/api/products', product,'http://localhost:3000')
+            post('/api/products', product, 'http://localhost:3000')
                 .then((response) => {
                     console.log(response);
                     saveProduct(product);

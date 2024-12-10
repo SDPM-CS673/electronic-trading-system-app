@@ -9,6 +9,7 @@ import CategorySection from "./CategorySection";
 import Sidebar from "./Sidebar";
 import Product from "./Product";
 import AddNewProductModal from "./AddNewProductModal";
+import MarketData from "./MarketData";
 
 export {
   Home,
@@ -22,4 +23,5 @@ export {
   Sidebar,
   Product,
   AddNewProductModal,
+  MarketData
 };
