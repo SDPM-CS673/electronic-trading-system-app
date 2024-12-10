@@ -9,6 +9,7 @@ import CategorySection from "./CategorySection";
 import Sidebar from "./Sidebar";
 import OrderList from "./orders/OrderList";
 import TradeList from "./trade/TradeList";
+import Wallet from "./Wallet";
 
 export {
   Home,
@@ -21,5 +22,6 @@ export {
   CategorySection,
   Sidebar,
   OrderList,
-  TradeList
+  TradeList,
+  Wallet
 };
