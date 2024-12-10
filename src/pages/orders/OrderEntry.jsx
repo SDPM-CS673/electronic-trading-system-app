@@ -1,9 +1,11 @@
 import { Button, DialogBody, DialogFooter, DialogHeader, Typography, Input, Select, Option } from "@material-tailwind/react";
 import { post } from "../../services/api-call.service";
+import { showMessage } from "../../services/message.service";
 const OrderEntry = ({ close }) => {
 
     const saveData = () => {
         post("/order/add", {}, "http://localhost:7001").then((result) => {
+            showMessage("Order added successfully", "success");
             close(true);
         }).catch((error) => {
             console.error(error);
