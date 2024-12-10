@@ -7,6 +7,8 @@ import ProductListPage from "./ProductListPage";
 import ProductCard from "./ProductCard";
 import CategorySection from "./CategorySection";
 import Sidebar from "./Sidebar";
+import OrderList from "./orders/OrderList";
+import TradeList from "./trade/TradeList";
 
 export {
   Home,
@@ -18,4 +20,6 @@ export {
   ProductCard,
   CategorySection,
   Sidebar,
+  OrderList,
+  TradeList
 };
