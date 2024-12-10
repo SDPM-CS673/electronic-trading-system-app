@@ -5,6 +5,8 @@ import { routeGroups } from "./routes"; // Import your routeGroups
 import Sidebar from "./pages/Sidebar";  // Import Sidebar correctly
 import Header from "./components/landing-page/Header/page";
 import Footer from "./components/landing-page/Footer/page";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false); // Sidebar is initially close
@@ -42,6 +44,7 @@ function App() {
 
   return (
     <>
+      <ToastContainer />
       <div className="flex flex-1 min-h-screen">
         {/* Sidebar */}
         <Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />
