@@ -145,7 +145,7 @@ const OrderList = () => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {obj.market_id}
+                                                {obj.category_name}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
