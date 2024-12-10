@@ -5,10 +5,8 @@ import { post, get } from "../services/api-call.service";
 const Category = () => {
 
 
-
   const [categories, setCategories] = useState([]);
-
-
+  const [filteredCategories, setFilteredCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categoryData, setCategoryData] = useState(null); // For holding data when editing
   const [isEdit, setIsEdit] = useState(false); // Track if we are editing a category
@@ -20,6 +18,7 @@ const Category = () => {
       .then((response) => {
         console.log(response);
         setCategories(response.categories);
+        setFilteredCategories(response.categories);
       })
       .catch((error) => {
         console.log(error);
@@ -40,6 +39,14 @@ const Category = () => {
     getData()
   };
 
+  const filterTableData = (searchText) => {
+    if (searchText === '') {
+      setFilteredCategories(categories);
+    } else {
+      setFilteredCategories(filteredCategories.filter(category => category.categoryName.toLowerCase().includes(searchText.toLowerCase())));
+    }
+  }
+
   return (
     <div className='p-6 bg-gray-50'>
       <div className='text-4xl font-bold text-gray-900 pb-6'>
@@ -50,6 +57,7 @@ const Category = () => {
         <input
           type="text"
           placeholder="Search categories"
+          onChange={(e) => filterTableData(e.target.value)}
           className="p-3 border rounded-md w-1/3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
@@ -73,12 +81,13 @@ const Category = () => {
             <th className="border p-3 text-left">Attribute 2</th>
             <th className="border p-3 text-left">Attribute 3</th>
             <th className="border p-3 text-left">Attribute 4</th>
+            <th className="border p-3 text-left">Description</th>
             <th className="border p-3 text-left">Status</th>
             <th className="border p-3 text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {categories.map((category, index) => (
+          {filteredCategories.map((category, index) => (
             <tr key={category.id} className="hover:bg-gray-100 transition-all">
               <td className="border p-3">{index + 1}</td>
               <td className="border p-3">{category.categoryName}</td>
@@ -86,6 +95,7 @@ const Category = () => {
               <td className="border p-3">{category.attributes.attribute2}</td>
               <td className="border p-3">{category.attributes.attribute3}</td>
               <td className="border p-3">{category.attributes.attribute4}</td>
+              <td className="border p-3">{category.description}</td>
               <td className="border p-3">{category.status}</td>
               <td className="border p-3">
                 <button
@@ -94,12 +104,12 @@ const Category = () => {
                 >
                   Edit
                 </button>
-                <button
+                {/* <button
                   onClick={() => handleDelete(category.id)}
                   className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-all"
                 >
                   Delete
-                </button>
+                </button> */}
               </td>
             </tr>
           ))}

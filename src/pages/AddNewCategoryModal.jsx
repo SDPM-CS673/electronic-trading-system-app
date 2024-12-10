@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { post, get } from "../services/api-call.service";
-import { use } from 'passport';
 
 const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory }) => {
+  const [categoryId, setCategoryId] = useState('');
+  const [discription, setdescription] = useState('');
   const [categoryName, setCategoryName] = useState('');
   const [attributes, setAttributes] = useState({
     attribute1: '',
@@ -14,41 +15,41 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
 
   useEffect(() => {
     if (isEdit && categoryData) {
+      setCategoryId(categoryData.id);
       setCategoryName(categoryData.categoryName);
       setAttributes(categoryData.attributes);
       setStatus(categoryData.status);
+      setdescription(categoryData.description);
     }
   }, [isEdit, categoryData]);
 
   const handleSave = () => {
     const statusPayload = status === 'Active' ? 'A' : 'I';
-    const category = { id: categoryData ? categoryData.id : '', name:categoryName, attribute1: attributes.attribute1, attribute2: attributes.attribute2, attribute3: attributes.attribute3, attribute4: attributes.attribute4, status: statusPayload };
     if (isEdit) {
+      const category = { id: categoryData.id, name: categoryName.trim().toLowerCase(), discription: discription.trim(), attribute1: attributes.attribute1.trim(), attribute2: attributes.attribute2.trim(), attribute3: attributes.attribute3.trim(), attribute4: attributes.attribute4.trim(), status: statusPayload };
       console.log('Edit Category', category);
-      useEffect(() => {
-        post('/api/categories', category, 'http://localhost:3000')
-          .then((response) => {
-            console.log(response);
-            saveCategory(category);
-            closeModal();
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, [])
+      post('/api/category/' + categoryData.id, category, 'http://localhost:3000')
+        .then((response) => {
+          console.log(response);
+          saveCategory(category);
+          closeModal();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
+
+      const category = { name: categoryName.trim().toLowerCase(), discription: discription.trim(), attribute1: attributes.attribute1.trim(), attribute2: attributes.attribute2.trim(), attribute3: attributes.attribute3.trim(), attribute4: attributes.attribute4.trim(), status: statusPayload };
       console.log('Save Category', category);
-      useEffect(() => {
-        post('/api/category/:id', { categoryName, attributes, status }, 'http://localhost:3000')
-          .then((response) => {
-            console.log(response);
-            saveCategory(category);
-            closeModal();
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, [])
+      post('/api/categories', category, 'http://localhost:3000')
+        .then((response) => {
+          console.log(response);
+          saveCategory(category);
+          closeModal();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
 
   };
@@ -57,14 +58,15 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
 
 
   const handleReset = () => {
-    setCategoryName('');
+    setCategoryName(isEdit ? categoryData.categoryName : '');
     setAttributes({
-      attribute1: '',
-      attribute2: '',
-      attribute3: '',
-      attribute4: '',
+      attribute1: categoryData.attributes.attribute1 || '',
+      attribute2: categoryData.attributes.attribute2 || '',
+      attribute3: categoryData.attributes.attribute3 || '',
+      attribute4: categoryData.attributes.attribute4 || '',
     });
     setStatus('Active');
+    setdescription(categoryData.description || '');
   };
 
   return (
@@ -76,7 +78,7 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
 
         <div>
           <label htmlFor="categoryName" className="block text-sm font-medium text-gray-700">
-            Category Name
+            Category Name*
           </label>
           <input
             id="categoryName"
@@ -85,13 +87,14 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
             onChange={(e) => setCategoryName(e.target.value)}
             className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter category name"
+            disabled={isEdit}
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-6 mt-6">
+        <div className="grid grid-cols-4 gap-6 mt-6">
           {Object.keys(attributes).map((key, index) => (
             <div key={index} className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">{`Attribute ${index + 1}`}</label>
+              <label className="block text-sm font-medium text-gray-700">{`Attribute ${index + 1}*`}</label>
               <input
                 type="text"
                 value={attributes[key]}
@@ -102,6 +105,21 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
             </div>
           ))}
         </div>
+
+        <div>
+          <label htmlFor="description" className="block text-sm font-medium mt-6 text-gray-700">
+            Discription
+          </label>
+          <input
+            id="description"
+            type="text"
+            value={discription}
+            onChange={(e) => setdescription(e.target.value)}
+            className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter description"
+          />
+        </div>
+
 
         <div className="mt-6">
           <label className="block text-sm font-medium text-gray-700">Status</label>
