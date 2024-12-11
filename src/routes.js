@@ -10,5 +10,6 @@ export const routeGroups = [
   { path: '/orders/list', component: 'OrderList' },
   { path: '/trades/list', component: 'TradeList' },
   { path: '/trades/settle', component: 'SettleTrades'},
-  { path: '/wallet', component: 'Wallet' }
+  { path: '/wallet', component: 'Wallet' },
+  { path: '/report', component: 'UserReports'}
 ];

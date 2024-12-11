@@ -12,8 +12,9 @@ import AddNewProductModal from "./AddNewProductModal";
 import MarketData from "./MarketData";
 import OrderList from "./orders/OrderList";
 import TradeList from "./trade/TradeList";
-import SettleTrades from "./trade/SettleTrades"
+import SettleTrades from "./trade/SettleTrades";
 import Wallet from "./Wallet";
+import UserReports from "./UserReports";
 
 export {
   Home,
@@ -31,5 +32,6 @@ export {
   OrderList,
   TradeList,
   Wallet,
-  SettleTrades
+  SettleTrades,
+  UserReports
 };
