@@ -15,6 +15,7 @@ import Wallet from "./Wallet";
 import OrderList from "./orders/OrderList";
 import SettleTrades from "./trade/SettleTrades";
 import TradeList from "./trade/TradeList";
+import UserReports from "./UserReports";
 
 export {
   AddNewCategoryModal,
@@ -34,7 +35,6 @@ export {
   Sidebar,
   TradeList,
   Wallet,
-  SettleTrades,
   UserReports
 };
 
