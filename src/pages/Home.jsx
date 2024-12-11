@@ -2,6 +2,7 @@
 import LandingPage from "../components/landing-page";
 
 
+
 const Home = () => {
   const heading = "UniTrade";
 
