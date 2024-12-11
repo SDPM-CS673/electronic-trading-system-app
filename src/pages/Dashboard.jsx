@@ -41,7 +41,7 @@ const Dashboard = () => {
         }
 
         try {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('jwtToken');
             const response = await axios.post('https://team-2-cs673-deployment.onrender.com/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -67,7 +67,7 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('jwtToken');
         console.log('dashboard token:', token);
 
         if (!token) {
@@ -128,7 +128,7 @@ const Dashboard = () => {
                             <div className="mt-4 text-center">
                                 {userData?.user_image_ref ? (
                                     <img 
-                                        src={`http://localhost:3000${userData.user_image_ref}`} 
+                                        src={`https://team-2-cs673-deployment.onrender.com${userData.user_image_ref}`} 
                                         alt="Profile Picture" 
                                         className="w-32 h-32 rounded-full object-cover mx-auto"
                                     />
