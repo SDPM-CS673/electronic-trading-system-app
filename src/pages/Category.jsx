@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import AddNewCategoryModal from './AddNewCategoryModal'; // Import the modal component
 import { post, get } from "../services/api-call.service";
+import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
+import { showMessage } from '../services/message.service';
 
 const Category = () => {
 
@@ -22,6 +24,7 @@ const Category = () => {
       })
       .catch((error) => {
         console.log(error);
+        showMessage(error, 'error')
       });
   }
 
@@ -54,21 +57,20 @@ const Category = () => {
       </div>
       {/* Search and Add New Category Button */}
       <div className="mb-6 flex justify-between">
-        <input
-          type="text"
-          placeholder="Search categories"
-          onChange={(e) => filterTableData(e.target.value)}
-          className="p-3 border rounded-md w-1/3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
+        <div>
+          <Input
+            type="text"
+            label="Search categories"
+            onChange={(e) => filterTableData(e.target.value)}
+          /></div>
+        <Button
           onClick={() => {
             setIsEdit(false);
             setIsModalOpen(true);
           }}
-          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-all"
         >
           Add New Category
-        </button>
+        </Button>
       </div>
 
       {/* Categories Table */}
@@ -98,13 +100,12 @@ const Category = () => {
               <td className="border p-3">{category.description}</td>
               <td className="border p-3">{category.status}</td>
               <td className="border p-3">
-                <button
+                <Button
                   onClick={() => handleEdit(category)}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-yellow-600 transition-all"
                 >
                   Edit
-                </button>
-                {/* <button
+                </Button>
+                {/* <Button
                   onClick={() => handleDelete(category.id)}
                   className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-all"
                 >

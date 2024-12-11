@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { post, get } from "../services/api-call.service";
+import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
+import { showMessage } from '../services/message.service';
 
 const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, categories }) => {
     const [productId, setProductId] = useState('');
@@ -47,6 +49,8 @@ const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, cate
             .then((response) => {
                 console.log(response);
                 setCategories(response.categories);
+                setCategoryId(response.categories[0].id);
+                console.log('Categories:', response.categories);
                 if (!category && !productName) {
                     setAttribute1Key(response.categories[0].attributes.attribute1 || 'Key 1');
                     setAttribute2Key(response.categories[0].attributes.attribute2 || 'Key 2');
@@ -66,7 +70,7 @@ const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, cate
         if (isEdit) {
             const product = {
                 category: categoryId.trim(),
-                productName: productName.trim().toLowerCase(),
+                productName: productName.trim(),
                 description: description.trim(),
                 attribute1Value: attribute1Value.trim(),
                 attribute2Value: attribute2Value.trim(),
@@ -79,10 +83,12 @@ const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, cate
                 .then((response) => {
                     console.log(response);
                     saveProduct(product);
+                    showMessage(response.message, 'success');
                     closeModal();
                 })
                 .catch((error) => {
                     console.log(error);
+                    showMessage(error, 'error');
                 });
         }
         else {
@@ -101,23 +107,32 @@ const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, cate
                 .then((response) => {
                     console.log(response);
                     saveProduct(product);
+                    showMessage(response.message, 'success');
                     closeModal();
                 })
                 .catch((error) => {
                     console.log(error);
+                    showMessage(error, 'error');
                 });
         }
     };
 
     const handleReset = () => {
-        setProductName(isEdit ? productData.name : '');
-        setDescription(isEdit ? productData.description : '');
-        setCategory(isEdit ? productData.category : '');
-        setAttribute1Value(isEdit ? productData.attribute1Value : '');
-        setAttribute2Value(isEdit ? productData.attribute2Value : '');
-        setAttribute3Value(isEdit ? productData.attribute3Value : '');
-        setAttribute4Value(isEdit ? productData.attribute4Value : '');
-        setStatus('Active');
+        if (isEdit) {
+            setDescription(isEdit ? productData.description : '');
+            setStatus('Active');
+        } else {
+            setProductName('');
+            setDescription('');
+            setCategory('');
+            setCategoryId('');
+            setAttribute1Value('');
+            setAttribute2Value('');
+            setAttribute3Value('');
+            setAttribute4Value('');
+            setStatus('Active');
+        }
+
     };
 
     return (
@@ -130,165 +145,131 @@ const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, cate
                 {/* Product Name and Category */}
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label htmlFor="productName" className="block text-sm font-medium text-gray-700">
-                            Product Name*
-                        </label>
-                        <input
+                        <Input
                             id="productName"
                             type="text"
                             value={productName}
                             onChange={(e) => setProductName(e.target.value)}
-                            className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter product name"
+
+                            label="Enter product name"
                             disabled={isEdit}
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-                            Category*
-                        </label>
-                        <select
+                        <Select
                             id="category"
+                            label='Category'
                             value={category}
-                            className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            onChange={(e) => {
-                                setCategory(e.target.value);
-                                const selectedCategory = categoriesList.find(cat => cat.categoryName === e.target.value);
-                                setCategoryId(selectedCategory.id);
-                                if (selectedCategory) {
-                                    setAttribute1Key(selectedCategory.attributes.attribute1 || 'Key 1');
-                                    setAttribute2Key(selectedCategory.attributes.attribute2 || 'Key 2');
-                                    setAttribute3Key(selectedCategory.attributes.attribute3 || 'Key 3');
-                                    setAttribute4Key(selectedCategory.attributes.attribute4 || 'Key 4');
-                                    setCategoryId(selectedCategory.id);
-                                }
-                            }}
                             disabled={isEdit}
                         >
                             {categoriesList.map((cat) => (
-                                <option key={cat.id} value={cat.categoryName}>
+                                <Option onClick={() => {
+                                    setAttribute1Key(cat.attributes.attribute1);
+                                    setAttribute2Key(cat.attributes.attribute2);
+                                    setAttribute3Key(cat.attributes.attribute3);
+                                    setAttribute4Key(cat.attributes.attribute4);
+                                    // setCategoryId(selectedCategory.id);
+
+                                }} key={cat.id} value={cat.categoryName}>
                                     {cat.categoryName}
-                                </option>
+                                </Option>
                             ))}
-                        </select>
+                        </Select>
                     </div>
                 </div>
 
                 {/* Attribute Fields */}
                 <div className="grid grid-cols-4 gap-4 mt-6">
                     <div>
-                        <label htmlFor="attribute1Value" className="block text-sm font-medium text-gray-700">
-                            {attribute1Key}
-                        </label>
-                        <input
+                        <Input
                             id="attribute1Value"
                             type="text"
                             value={attribute1Value}
                             onChange={(e) => setAttribute1Value(e.target.value)}
-                            className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter attribute 1 value"
+                            label={attribute1Key}
                             disabled={isEdit}
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="attribute2Value" className="block text-sm font-medium text-gray-700">
-                            {attribute2Key}
-                        </label>
-                        <input
+                        <Input
                             id="attribute2Value"
                             type="text"
                             value={attribute2Value}
                             onChange={(e) => setAttribute2Value(e.target.value)}
-                            className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter attribute 2 value"
+                            label={attribute2Key}
                             disabled={isEdit}
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="attribute3Value" className="block text-sm font-medium text-gray-700">
-                            {attribute3Key}
-                        </label>
-                        <input
+                        <Input
                             id="attribute3Value"
                             type="text"
                             value={attribute3Value}
                             onChange={(e) => setAttribute3Value(e.target.value)}
-                            className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter attribute 3 value"
+                            label={attribute3Key}
                             disabled={isEdit}
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="attribute4Value" className="block text-sm font-medium text-gray-700">
-                            {attribute4Key}
-                        </label>
-                        <input
+                        <Input
                             id="attribute4Value"
                             type="text"
                             value={attribute4Value}
                             onChange={(e) => setAttribute4Value(e.target.value)}
-                            className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter attribute 4 value"
+                            label={attribute4Key}
                             disabled={isEdit}
                         />
                     </div>
                 </div>
 
                 {/* Description */}
-                <div>
-                    <label htmlFor="description" className="block text-sm font-medium mt-6 text-gray-700">
-                        Description
-                    </label>
-                    <input
+                <div className='mt-6'>
+                    <Input
                         id="description"
                         type="text"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter product description"
+                        label="Enter product description"
                     />
                 </div>
 
                 {/* Status */}
-                <div>
-                    <label htmlFor="status" className="block text-sm font-medium mt-6 text-gray-700">
-                        Status
-                    </label>
-                    <select
+                <div className='mt-6'>
+                    <Select
                         id="status"
+                        label='Status'
                         value={status}
-                        onChange={(e) => setStatus(e.target.value)}
-                        className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        onChange={(e) => setStatus(e)}
                     >
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
+                        <Option value="Active">Active</Option>
+                        <Option value="Inactive">Inactive</Option>
+                    </Select>
                 </div>
 
                 <div className="mt-6 flex justify-between border-t pt-4 space-x-4">
-                    <button
+                    <Button
                         onClick={closeModal}
-                        className="bg-gray-600 text-white px-6 py-3 rounded-md hover:bg-gray-700 transition-all"
+
                     >
                         Close
-                    </button>
+                    </Button>
                     <div className='flex gap-4'>
-                        <button
+                        <Button
                             onClick={handleReset}
-                            className="bg-yellow-500 text-white px-6 py-3 rounded-md hover:bg-yellow-600 transition-all"
+
                         >
                             Reset
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             onClick={handleSave}
-                            className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-all"
+
                         >
                             {isEdit ? 'Update' : 'Save'}
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

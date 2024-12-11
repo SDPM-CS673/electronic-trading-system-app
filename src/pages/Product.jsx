@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AddNewProductModal from './AddNewProductModal'; // Import the modal component
 import { post, get } from "../services/api-call.service";
+import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
 
 const Product = () => {
 
@@ -42,7 +43,7 @@ const Product = () => {
         if (searchText === '') {
             setFilteredProducts(products);
         } else {
-            setFilteredProducts(filteredProducts.filter(product => product.productName.toLowerCase().includes(searchText.toLowerCase())));
+            setFilteredProducts(filteredProducts.filter(product => product.name.toLowerCase().includes(searchText.toLowerCase())));
         }
     }
 
@@ -53,21 +54,22 @@ const Product = () => {
             </div>
             {/* Search and Add New Product Button */}
             <div className="mb-6 flex justify-between">
-                <input
-                    type="text"
-                    placeholder="Search products"
-                    onChange={(e) => filterTableData(e.target.value)}
-                    className="p-3 border rounded-md w-1/3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <button
+                <div>
+                    <Input
+                        type="text"
+                        label="Search products"
+                        onChange={(e) => filterTableData(e.target.value)}
+                    />
+                </div>
+                <Button
                     onClick={() => {
                         setIsEdit(false);
                         setIsModalOpen(true);
                     }}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-all"
+
                 >
                     Add New Product
-                </button>
+                </Button>
             </div>
 
             {/* Products Table */}
@@ -111,12 +113,11 @@ const Product = () => {
                             <td className="border p-3">{product.description}</td>
                             <td className="border p-3">{product.status}</td>
                             <td className="border p-3">
-                                <button
+                                <Button
                                     onClick={() => handleEdit(product)}
-                                    className="bg-yellow-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-yellow-600 transition-all"
                                 >
                                     Edit
-                                </button>
+                                </Button>
                                 {/* <button
                   onClick={() => handleDelete(product.id)}
                   className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-all"

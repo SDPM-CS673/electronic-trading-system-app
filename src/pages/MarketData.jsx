@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { get } from "../services/api-call.service";
+import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
 
 const MarketData = () => {
     const [activeTab, setActiveTab] = useState("Live"); // Tracks active tab
@@ -13,11 +14,11 @@ const MarketData = () => {
     }, [activeTab]);
 
     const fetchMarketData = () => {
-        const endpoint = activeTab === "Live" ? "/api/liveMarketData" : "/api/historicMarketData";
+        const endpoint = activeTab === "Live" ? "/api/allMarketData" : "/api/historicMarketData";
         get(endpoint, "http://localhost:3000")
             .then((response) => {
-                setMarketData(response.data);
-                setFilteredData(response.data);
+                setMarketData(response);
+                setFilteredData(response);
             })
             .catch((error) => console.error(error));
     };
@@ -25,9 +26,14 @@ const MarketData = () => {
     const filterTableData = () => {
         const lowerSearch = searchText.toLowerCase();
         const filtered = marketData.filter((data) => {
-            const productIdMatches = data.productId.toLowerCase().includes(lowerSearch);
-            const dateMatches = selectedDate ? data.date === selectedDate : true;
-            return productIdMatches && dateMatches;
+            const productIdMatches = data.product_name.toLowerCase().includes(lowerSearch);
+            if (activeTab === "Live") {
+                return productIdMatches;
+            }
+            else {
+                const dateMatches = selectedDate ? data.date === selectedDate : true;
+                return productIdMatches && dateMatches;
+            }
         });
         setFilteredData(filtered);
     };
@@ -42,38 +48,41 @@ const MarketData = () => {
 
             {/* Tabs */}
             <div className="flex space-x-4 mb-6">
-                <button
-                    className={`px-6 py-2 rounded-md text-white ${activeTab === "Live" ? "bg-blue-600" : "bg-gray-300"
+                <Button
+                    className={`${activeTab === "Live" ? "bg-blue-600" : ""
                         }`}
-                    onClick={() => setActiveTab("Live")}
+                    onClick={() => { setActiveTab("Live"); setSearchText("") }}
                 >
                     Live
-                </button>
-                <button
-                    className={`px-6 py-2 rounded-md text-white ${activeTab === "Historic" ? "bg-blue-600" : "bg-gray-300"
+                </Button>
+                <Button
+                    className={`${activeTab === "Historic" ? "bg-blue-600" : ""
                         }`}
-                    onClick={() => setActiveTab("Historic")}
+                    onClick={() => { setActiveTab("Historic"); setSearchText("") }}
                 >
                     Historic
-                </button>
+                </Button>
             </div>
 
             {/* Filters */}
             <div className="mb-6 flex justify-between">
-                <input
-                    type="text"
-                    placeholder="Search by Product ID"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                    className="p-3 border rounded-md w-1/3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {activeTab === "Historic" && (
-                    <input
-                        type="date"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                        className="p-3 border rounded-md w-1/3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                <div>
+                    <Input
+                        type="text"
+                        label="Search by Product ID"
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+
                     />
+                </div>
+                {activeTab === "Historic" && (
+                    <div>
+                        <Input
+                            type="date"
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e)}
+                            label="Enter Date"
+                        /></div>
                 )}
             </div>
 
@@ -93,11 +102,11 @@ const MarketData = () => {
                     {filteredData.map((data, index) => (
                         <tr key={index} className="hover:bg-gray-100 transition-all">
                             <td className="border p-3">{index + 1}</td>
-                            <td className="border p-3">{data.productId}</td>
-                            <td className="border p-3">{data.bestBuyPrice}</td>
-                            <td className="border p-3">{data.bestSellPrice}</td>
-                            <td className="border p-3">{data.bestBuyVolume}</td>
-                            <td className="border p-3">{data.bestSellVolume}</td>
+                            <td className="border p-3">{data.product_name}</td>
+                            <td className="border p-3">{data.best_buy_price}</td>
+                            <td className="border p-3">{data.best_sell_price}</td>
+                            <td className="border p-3">{data.best_buy_volume}</td>
+                            <td className="border p-3">{data.best_sell_volume}</td>
                         </tr>
                     ))}
                 </tbody>
