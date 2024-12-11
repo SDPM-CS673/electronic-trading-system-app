@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AddNewCategoryModal from './AddNewCategoryModal'; // Import the modal component
+import { post, get } from "../services/api-call.service";
+import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
+import { showMessage } from '../services/message.service';
 
 const Category = () => {
-  const [categories, setCategories] = useState([
-    {
-      id: 1,
-      categoryName: 'Category 1',
-      attributes: { attribute1: 'Value 1', attribute2: 'Value 2', attribute3: 'Value 3', attribute4: 'Value 4', attribute5: 'Value 5', attribute6: 'Value 6' },
-      status: 'Active',
-    },
-    {
-      id: 2,
-      categoryName: 'Category 2',
-      attributes: { attribute1: 'Value A', attribute2: 'Value B', attribute3: 'Value C', attribute4: 'Value D', attribute5: 'Value E', attribute6: 'Value F' },
-      status: 'Inactive',
-    },
-  ]);
+
+
+  const [categories, setCategories] = useState([]);
+  const [filteredCategories, setFilteredCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categoryData, setCategoryData] = useState(null); // For holding data when editing
   const [isEdit, setIsEdit] = useState(false); // Track if we are editing a category
+
+  useEffect(() => { getData() }, [])
+
+  const getData = () => {
+    get("/api/allCategories", "http://localhost:3000")
+      .then((response) => {
+        console.log(response);
+        setCategories(response.categories);
+        setFilteredCategories(response.categories);
+      })
+      .catch((error) => {
+        console.log(error);
+        showMessage(error, 'error')
+      });
+  }
 
   const handleEdit = (category) => {
     setCategoryData(category);
@@ -31,16 +39,16 @@ const Category = () => {
   };
 
   const handleSaveCategory = (newCategory) => {
-    if (isEdit) {
-      // Update the existing category
-      setCategories(categories.map((category) =>
-        category.id === newCategory.id ? newCategory : category
-      ));
-    } else {
-      // Create new category
-      setCategories([...categories, { ...newCategory, id: categories.length + 1 }]);
-    }
+    getData()
   };
+
+  const filterTableData = (searchText) => {
+    if (searchText === '') {
+      setFilteredCategories(categories);
+    } else {
+      setFilteredCategories(filteredCategories.filter(category => category.categoryName.toLowerCase().includes(searchText.toLowerCase())));
+    }
+  }
 
   return (
     <div className='p-6 bg-gray-50'>
@@ -49,20 +57,20 @@ const Category = () => {
       </div>
       {/* Search and Add New Category Button */}
       <div className="mb-6 flex justify-between">
-        <input
-          type="text"
-          placeholder="Search categories"
-          className="p-3 border rounded-md w-1/3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
+        <div>
+          <Input
+            type="text"
+            label="Search categories"
+            onChange={(e) => filterTableData(e.target.value)}
+          /></div>
+        <Button
           onClick={() => {
             setIsEdit(false);
             setIsModalOpen(true);
           }}
-          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-all"
         >
           Add New Category
-        </button>
+        </Button>
       </div>
 
       {/* Categories Table */}
@@ -75,14 +83,13 @@ const Category = () => {
             <th className="border p-3 text-left">Attribute 2</th>
             <th className="border p-3 text-left">Attribute 3</th>
             <th className="border p-3 text-left">Attribute 4</th>
-            <th className="border p-3 text-left">Attribute 5</th>
-            <th className="border p-3 text-left">Attribute 6</th>
+            <th className="border p-3 text-left">Description</th>
             <th className="border p-3 text-left">Status</th>
             <th className="border p-3 text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {categories.map((category, index) => (
+          {filteredCategories.map((category, index) => (
             <tr key={category.id} className="hover:bg-gray-100 transition-all">
               <td className="border p-3">{index + 1}</td>
               <td className="border p-3">{category.categoryName}</td>
@@ -90,22 +97,20 @@ const Category = () => {
               <td className="border p-3">{category.attributes.attribute2}</td>
               <td className="border p-3">{category.attributes.attribute3}</td>
               <td className="border p-3">{category.attributes.attribute4}</td>
-              <td className="border p-3">{category.attributes.attribute5}</td>
-              <td className="border p-3">{category.attributes.attribute6}</td>
+              <td className="border p-3">{category.description}</td>
               <td className="border p-3">{category.status}</td>
               <td className="border p-3">
-                <button
+                <Button
                   onClick={() => handleEdit(category)}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-yellow-600 transition-all"
                 >
                   Edit
-                </button>
-                <button
+                </Button>
+                {/* <Button
                   onClick={() => handleDelete(category.id)}
                   className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-all"
                 >
                   Delete
-                </button>
+                </button> */}
               </td>
             </tr>
           ))}

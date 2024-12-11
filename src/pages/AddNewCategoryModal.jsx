@@ -1,42 +1,84 @@
 import React, { useState, useEffect } from 'react';
+import { post, get } from "../services/api-call.service";
+import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
+import { showMessage } from '../services/message.service';
 
 const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory }) => {
+  const [categoryId, setCategoryId] = useState('');
+  const [discription, setdescription] = useState('');
   const [categoryName, setCategoryName] = useState('');
   const [attributes, setAttributes] = useState({
     attribute1: '',
     attribute2: '',
     attribute3: '',
     attribute4: '',
-    attribute5: '',
-    attribute6: '',
   });
   const [status, setStatus] = useState('Active');
 
   useEffect(() => {
     if (isEdit && categoryData) {
+      setCategoryId(categoryData.id);
       setCategoryName(categoryData.categoryName);
       setAttributes(categoryData.attributes);
       setStatus(categoryData.status);
+      setdescription(categoryData.description);
     }
   }, [isEdit, categoryData]);
 
   const handleSave = () => {
-    const newCategory = { id: categoryData ? categoryData.id : Date.now(), categoryName, attributes, status };
-    saveCategory(newCategory);
-    closeModal();
+    const statusPayload = status === 'Active' ? 'A' : 'I';
+    if (isEdit) {
+      const category = { id: categoryData.id, name: categoryName.trim(), discription: discription.trim(), attribute1: attributes.attribute1.trim(), attribute2: attributes.attribute2.trim(), attribute3: attributes.attribute3.trim(), attribute4: attributes.attribute4.trim(), status: statusPayload };
+      console.log('Edit Category', category);
+      post('/api/category/' + categoryData.id, category, 'http://localhost:3000')
+        .then((response) => {
+          console.log(response);
+          saveCategory(category);
+          showMessage(response.message, 'success')
+          closeModal();
+        })
+        .catch((error) => {
+          console.log(error);
+          showMessage(error, 'error')
+        });
+    } else {
+
+      const category = { name: categoryName.trim().toLowerCase(), discription: discription.trim(), attribute1: attributes.attribute1.trim(), attribute2: attributes.attribute2.trim(), attribute3: attributes.attribute3.trim(), attribute4: attributes.attribute4.trim(), status: statusPayload };
+      console.log('Save Category', category);
+      post('/api/categories', category, 'http://localhost:3000')
+        .then((response) => {
+          console.log(response);
+          saveCategory(category);
+          showMessage(response.message, 'success')
+          closeModal();
+        })
+        .catch((error) => {
+          showMessage(error, 'error')
+          console.log(error);
+        });
+    }
+
   };
 
+
+
+
   const handleReset = () => {
-    setCategoryName('');
-    setAttributes({
-      attribute1: '',
-      attribute2: '',
-      attribute3: '',
-      attribute4: '',
-      attribute5: '',
-      attribute6: '',
-    });
-    setStatus('Active');
+    if (isEdit) {
+      setStatus('Active');
+      setdescription(categoryData.description || '');
+    } else {
+      setCategoryName('');
+      setAttributes({
+        attribute1: '',
+        attribute2: '',
+        attribute3: '',
+        attribute4: '',
+      });
+      setStatus('Active');
+      setdescription('');
+    }
+
   };
 
   return (
@@ -47,66 +89,70 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
         </div>
 
         <div>
-          <label htmlFor="categoryName" className="block text-sm font-medium text-gray-700">
-            Category Name
-          </label>
-          <input
+          <Input
             id="categoryName"
             type="text"
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
-            className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter category name"
+            label="Enter category name"
+            disabled={isEdit}
           />
         </div>
 
-        <div className="grid grid-cols-3 gap-6 mt-6">
+        <div className="grid grid-cols-4 gap-6 mt-6">
           {Object.keys(attributes).map((key, index) => (
             <div key={index} className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">{`Attribute ${index + 1}`}</label>
-              <input
+              <Input
                 type="text"
                 value={attributes[key]}
                 onChange={(e) => setAttributes({ ...attributes, [key]: e.target.value })}
-                className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder={`Enter Attribute ${index + 1}`}
+                label={`Enter Attribute ${index + 1}`}
+                disabled={isEdit}
               />
             </div>
           ))}
         </div>
 
+        <div className='mt-4'>
+
+          <Input
+            id="description"
+            type="text"
+            value={discription}
+            onChange={(e) => setdescription(e.target.value)}
+            className="w-full p-3"
+            label="Enter description"
+          />
+        </div>
+
+
         <div className="mt-6">
-          <label className="block text-sm font-medium text-gray-700">Status</label>
-          <select
+          <Select
             value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="w-full p-3 border rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => setStatus(e)}
           >
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
+            <Option value="Active">Active</Option>
+            <Option value="Inactive">Inactive</Option>
+          </Select>
         </div>
 
         <div className="mt-6 flex justify-between border-t pt-4 space-x-4">
-          <button
+          <Button
             onClick={closeModal}
-            className="bg-gray-600 text-white px-6 py-3 rounded-md hover:bg-gray-700 transition-all"
           >
             Close
-          </button>
+          </Button>
           <div className='flex gap-4'>
-            <button
+            <Button
               onClick={handleReset}
-              className="bg-yellow-500 text-white px-6 py-3 rounded-md hover:bg-yellow-600 transition-all"
             >
               Reset
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleSave}
-              className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-all"
             >
               {isEdit ? 'Update' : 'Save'}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
