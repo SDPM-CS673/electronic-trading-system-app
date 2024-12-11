@@ -1,8 +1,8 @@
+import { Button, Input } from "@material-tailwind/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // Import useAuth hook
 import { post } from "../services/api-call.service"; // Ensure the import path is correct
-import { Input, Button } from "@material-tailwind/react";
-import { useAuth } from "../context/AuthContext";  // Import useAuth hook
 import { showMessage } from "../services/message.service";
 
 const Login = () => {
@@ -19,6 +19,7 @@ const Login = () => {
   };
 
   const doLogin = () => {
+
     post("/auth/login", formData, "team3").then((result) => {
       // Save the token in localStorage
       localStorage.setItem("jwtToken", JSON.stringify(result.token));
