@@ -19,21 +19,8 @@ const Login = () => {
   };
 
   const doLogin = () => {
-    /*
-    post("/auth/login", formData, "team3").then((result) => {
-      // Save the token in localStorage
-      localStorage.setItem("jwtToken", JSON.stringify(result.token));
-      delete result.token;
-      login(result);
-      showMessage("Login successful!", "success");
-      navigate("/home");
-    }).catch((error) => {
-      console.error(error);
-      showMessage("Login failed! Please check your credentials.", "error");
-    });
-    */
 
-    post("https://team-2-cs673-deployment.onrender.com/login", formData, "team3").then((result) => {
+    post("/auth/login", formData, "team3").then((result) => {
       // Save the token in localStorage
       localStorage.setItem("jwtToken", JSON.stringify(result.token));
       delete result.token;
