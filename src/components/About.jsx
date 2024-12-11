@@ -1,7 +1,7 @@
 const About = () => {
     return (
       <section id="about" className="min-h-screen w-full bg-gray-900 text-gray-200 py-16 px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
+        <div className=" mx-auto flex flex-col md:flex-row gap-8">
           <div className="p-8 rounded-lg bg-gray-800 flex-1">
             <h3 className="text-2xl mb-4 text-white">About Us</h3>
             <p className="text-base leading-relaxed">

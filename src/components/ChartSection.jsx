@@ -35,7 +35,7 @@ const ChartSection = () => {
 
   return (
     <section className="py-12 bg-gray-900 text-gray-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-gray-300 text-center">Live Stock Chart</h2>
         <div className="mt-8">
           <Line data={data} options={options} />
