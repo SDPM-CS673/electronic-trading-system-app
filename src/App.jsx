@@ -57,7 +57,7 @@ function App() {
           <div className={'h-[10%] '}>
             <Header toggleSidebar={toggleSidebar} />
           </div>
-          <div style={isLoggedIn ? { paddingLeft: sidebarOpen ? '12%' : '6%' } : { paddingTop: '1rem', paddingBottom: '1rem' }} className="h-[95%] overflow-auto">
+          <div style={isLoggedIn ? { paddingLeft: sidebarOpen ? '12%' : '6%' } : { paddingTop: '1rem', paddingBottom: '1rem' }} className="h-[85%] overflow-auto">
             <Routes>{renderRoutes(routeGroups)}</Routes>  {/* Dynamically render routes */}
           </div>
           <div className={'h-[5%]'}>

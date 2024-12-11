@@ -1,5 +1,6 @@
 import React from "react";
 import { FaBars, FaTimes, FaHome, FaCogs, FaInfoCircle, FaEnvelope } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Sidebar = ({ isOpen, onClose }) => {
   return (
@@ -19,24 +20,24 @@ const Sidebar = ({ isOpen, onClose }) => {
         <nav className="mt-4 w-full">
           <ul>
             <li>
-              <a href="/" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
+              <Link to="/" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
                 {isOpen ? <span className="flex flex-row"> <FaHome size={20} /><span className="pl-4">Home</span> </span> : <FaHome size={20} />}
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/category" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
+              <Link to="/category" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
                 {isOpen ? <span className="flex flex-row"> <FaCogs size={20} /><span className="pl-4">Product</span> </span> : <FaCogs size={20} />}
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/product" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
+              <Link to="/product" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
                 {isOpen ? <span className="flex flex-row"> <FaInfoCircle size={20} /> <span className="pl-4">Category</span> </span> : <FaInfoCircle size={20} />}
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/marketdata" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
+              <Link to="/marketdata" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
                 {isOpen ? <span className="flex flex-row"> <FaEnvelope size={20} /><span className="pl-4">Market Data</span> </span> : <FaEnvelope size={20} />}
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

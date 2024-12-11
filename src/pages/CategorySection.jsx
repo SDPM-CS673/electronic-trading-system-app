@@ -23,7 +23,7 @@ const CategorySection = ({ title, products }) => {
         {/* Left scroll button */}
         <button
           onClick={() => scroll("left")}
-          className="absolute left-0 top-0 transform translate-y-1/2 text-white p-4 rounded-full shadow-md z-10 text-3xl transition-all hover:scale-110"
+          className="absolute left-0 top-0 transform translate-y-1/2 text-white p-4 rounded-full shadow-md text-3xl transition-all hover:scale-110"
         >
           &lt;
         </button>
@@ -31,7 +31,7 @@ const CategorySection = ({ title, products }) => {
         {/* Right scroll button */}
         <button
           onClick={() => scroll("right")}
-          className="absolute right-0 top-0 transform translate-y-1/2 text-white p-4 rounded-full shadow-md z-10 text-3xl transition-all hover:scale-110"
+          className="absolute right-0 top-0 transform translate-y-1/2 text-white p-4 rounded-full shadow-md text-3xl transition-all hover:scale-110"
         >
           &gt;
         </button>
