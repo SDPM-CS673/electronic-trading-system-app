@@ -12,7 +12,8 @@ const RecentCategoriesSection = () => {
 
 
   const fetchCategories = () => {
-    get("/api/recentCategories", "http://localhost:3000").then((response) => {
+    get("/api/recentCategories", "team1"
+    ).then((response) => {
       // setCategories(response.categories)
       setCategories(["Electronics", "Clothing", "Books", "Home & Kitchen", "Sports"])
       console.log("Categories fetched", response.categories);
