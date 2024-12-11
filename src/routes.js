@@ -9,6 +9,6 @@ export const routeGroups = [
   { path: '/product/list', component: 'ProductListPage' },
   { path: '/orders/list', component: 'OrderList' },
   { path: '/trades/list', component: 'TradeList' },
-  { path: '/wallet', component: 'Wallet' },
-  { path: '/wallet', component: 'SettleReport'}
+  { path: '/trades/settle', component: 'SettleTrades'},
+  { path: '/wallet', component: 'Wallet' }
 ];
