@@ -15,11 +15,12 @@ const Header = ({ toggleSidebar }) => {
   const doLogOut = () => {
     localStorage.removeItem('jwtToken');
     logout();
+    naviagte('/');
     showMessage('Logged out successfully', 'success');
   }
 
   const goToSignUp = () => {
-    naviagte('/signup');
+    naviagte('/register');
   }
   return (
     <header className="bg-black shadow-md w-full top-0 fixed "> {/* Fixed header with z-index */}
@@ -47,7 +48,7 @@ const Header = ({ toggleSidebar }) => {
               <Button variant="outlined" onClick={goToLogIn} className='bg-white' >
                 Login
               </Button>}
-            {!isLoggedIn && <Button variant="outlined" className='bg-white'>
+            {!isLoggedIn && <Button variant="outlined" onClick={goToSignUp} className='bg-white'>
               Sign Up
             </Button>}
             {

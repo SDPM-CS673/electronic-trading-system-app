@@ -1,17 +1,50 @@
 import { Button, DialogBody, DialogFooter, DialogHeader, Typography, Input, Select, Option } from "@material-tailwind/react";
-import { post } from "../../services/api-call.service";
+import { post, get } from "../../services/api-call.service";
 import { showMessage } from "../../services/message.service";
+import { useEffect, useState } from "react";
 const OrderEntry = ({ close }) => {
+    const [categories, setCategories] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [formData, setFormData] = useState({
+        product_category: "",
+        product_name: "",
+        order_type: "",
+        side: "",
+        order_price: "",
+        order_qty: ""
+    });
+    useEffect(() => {
+        // Fetch category list
+        categoryList();
+    }, []);
+
+    const categoryList = () => {
+        get("/api/productCategoryWise", "team1").then((response) => {
+            if (response.categories) {
+                setCategories(response.categories);
+            }
+        }).catch((error) => {
+            showMessage("Error ocurred while getting category list!", 'error')
+        });
+    }
 
     const saveData = () => {
-        post("/order/add", {}, "team3").then((result) => {
+        console.log(formData);
+        post("/order/add", formData, "team3").then((result) => {
             showMessage("Order added successfully", "success");
             close(true);
         }).catch((error) => {
+            showMessage("Error ocurred while adding order!", "success");
             console.error(error);
         })
     }
-    
+
+    const handleChange = (e, name) => {
+        const value = e.target ? e.target.value : e;
+        formData[name] = value;
+        setFormData(formData);
+    };
+
     return (
         <>
             <DialogHeader className="border-b border-gray-300">New Order Entry</DialogHeader>
@@ -25,9 +58,9 @@ const OrderEntry = ({ close }) => {
                             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                             labelProps={{
                                 className: "before:content-none after:content-none",
-                            }}>
-                            <Option>Buy</Option>
-                            <Option>Sell</Option>
+                            }} name="side" id="side" onChange={(e) => { handleChange(e, "side") }} >
+                            <Option value="B">Buy</Option>
+                            <Option value="S">Sell</Option>
                         </Select>
                         <Typography variant="h6" color="blue-gray" className="-mb-3">
                             Order Type
@@ -36,10 +69,10 @@ const OrderEntry = ({ close }) => {
                             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                             labelProps={{
                                 className: "before:content-none after:content-none",
-                            }}>
-                            <Option>Limit</Option>
-                            <Option>Feel Or Kill</Option>
-                            <Option>Feel And Kill</Option>
+                            }} name="order_type" id="order_type" onChange={(e) => { handleChange(e, "order_type") }}>
+                            <Option value="L">Limit</Option>
+                            <Option value="FOK">Feel Or Kill</Option>
+                            <Option value="FAK">Feel And Kill</Option>
                         </Select>
                         <Typography variant="h6" color="blue-gray" className="-mb-3">
                             Product Category
@@ -48,9 +81,10 @@ const OrderEntry = ({ close }) => {
                             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                             labelProps={{
                                 className: "before:content-none after:content-none",
-                            }}>
-                            <Option>Buy</Option>
-                            <Option>Sell</Option>
+                            }} name="product_category" id="product_category" onChange={(e) => { handleChange(e, "product_category"); handleChange("", "product_name") }}>
+                            {categories.map((category, index) => (
+                                <Option value={category.id} onClick={() => { setProducts(category.products) }}>{category.name}</Option>
+                            ))}
                         </Select>
                         <Typography variant="h6" color="blue-gray" className="-mb-3">
                             Product Name
@@ -59,9 +93,10 @@ const OrderEntry = ({ close }) => {
                             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                             labelProps={{
                                 className: "before:content-none after:content-none",
-                            }}>
-                            <Option>Buy</Option>
-                            <Option>Sell</Option>
+                            }} name="product_name" id="product_name" onChange={(e) => { handleChange(e, "product_name") }}>
+                            {products.map((product, index) => (
+                                <Option value={product.id}>{product.name}</Option>
+                            ))}
                         </Select>
                         <Typography variant="h6" color="blue-gray" className="-mb-3">
                             Quantity
@@ -74,6 +109,7 @@ const OrderEntry = ({ close }) => {
                             labelProps={{
                                 className: "before:content-none after:content-none",
                             }}
+                            name="order_qty" id="order_qty" onChange={(e) => { handleChange(e, "order_qty") }}
                         />
                         <Typography variant="h6" color="blue-gray" className="-mb-3">
                             Price
@@ -81,11 +117,12 @@ const OrderEntry = ({ close }) => {
                         <Input
                             type="number"
                             size="lg"
-                            placeholder="Quantity"
+                            placeholder="Price"
                             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                             labelProps={{
                                 className: "before:content-none after:content-none",
                             }}
+                            name="order_price" id="order_price" onChange={(e) => { handleChange(e, "order_price") }}
                         />
                     </div>
                 </form>

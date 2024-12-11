@@ -4,7 +4,7 @@ import { Button, Input, Option, Select, Typography, Card } from "@material-tailw
 
 const TradeList = () => {
     const [tradeList, setTradeList] = useState([]);
-    const TABLE_HEAD = ["Product Category", "Product Name", "Side", "Trade Date", "Trade Price", "Trade Qty", "Trade Margin", ""];
+    const TABLE_HEAD = ["Product Category", "Product Name", "Side", "Trade Date", "Trade Price", "Trade Qty", "Trade Margin"];
     useEffect(() => { 
         getTradeList();
     }, []);
@@ -133,7 +133,7 @@ const TradeList = () => {
                                             color="blue-gray"
                                             className="font-normal"
                                         >
-                                            {obj.market_id}
+                                            {obj.category_name}
                                         </Typography>
                                     </td>
                                     <td className={classes}>
@@ -190,7 +190,7 @@ const TradeList = () => {
                                             {obj.trade_margin}
                                         </Typography>
                                     </td>
-                                    <td className={classes}>
+                                    {/* <td className={classes}>
                                         <Typography
                                             as="a"
                                             href="#"
@@ -200,7 +200,7 @@ const TradeList = () => {
                                         >
                                             Accept
                                         </Typography>
-                                    </td>
+                                    </td> */}
                                 </tr>
                             );
                         })}
