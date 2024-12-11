@@ -28,7 +28,8 @@ const ProductListPage = () => {
 
   const encodeProductData = (product) => {
     // Use URLSearchParams to convert product data into a query string
-    return new URLSearchParams(product).toString();
+    const jsonString = JSON.stringify(product);
+    return btoa(jsonString);
   };
 
   const ProductCard = ({ product }) => {
