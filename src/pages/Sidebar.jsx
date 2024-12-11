@@ -1,13 +1,13 @@
-import React from "react";
 import {
   FaBars,
-  FaTimes,
-  FaHome,
-  FaTags,
-  FaShoppingCart,
   FaChartBar,
-  FaWallet,
   FaExchangeAlt,
+  FaHome,
+  FaShoppingCart,
+  FaTags,
+  FaTimes,
+  FaUser,
+  FaWallet,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -122,6 +122,21 @@ const Sidebar = ({ isOpen, onClose }) => {
                   </span>
                 ) : (
                   <FaExchangeAlt size={20} />
+                )}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/my_account"
+                className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700"
+              >
+                {isOpen ? (
+                  <span className="flex flex-row">
+                    <FaUser size={20} />
+                    <span className="pl-4">Your Account</span>
+                  </span>
+                ) : (
+                  <FaUser size={20} />
                 )}
               </Link>
             </li>

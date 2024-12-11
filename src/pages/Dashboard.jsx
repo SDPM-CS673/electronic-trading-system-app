@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import Sidebar from './Sidebar.jsx';
 
 const Dashboard = () => {
@@ -10,6 +11,8 @@ const Dashboard = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [file, setFile] = useState(null);  // State to store selected file for upload
     const [profilePicUrl, setProfilePicUrl] = useState('');  // State to hold the updated profile picture URL
+
+    const { userDetails } = useAuth();
 
     // Function to toggle sidebar
     const toggleSidebar = () => setIsSidebarOpen(prevState => !prevState);
@@ -33,7 +36,7 @@ const Dashboard = () => {
 
         const formData = new FormData();
         formData.append("image", file);
-        formData.append("username", userData.name);
+        formData.append("username", userDetails.name);
         console.log("USERDATA", userData);
 
         for (let pair of formData.entries()) {
@@ -42,6 +45,7 @@ const Dashboard = () => {
 
         try {
             const token = localStorage.getItem('jwtToken');
+            console.log(userDetails.user_image_ref)
             const response = await axios.post('https://team-2-cs673-deployment.onrender.com/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -49,7 +53,6 @@ const Dashboard = () => {
                 },
             });
 
-            console.log(response.data);
             if (response.data.success) {
                 const newProfilePicUrl = response.data.profilePicUrl;
                 setUserData((prevUserData) => ({
@@ -86,7 +89,7 @@ const Dashboard = () => {
                 });
 
                 if (response.data.success) {
-                    console.log("RESPONSE SUCCESS", response.data.user);
+                    console.log("userdata: "+userDetails.user_image_ref);
                     setUserData(response.data.user);
                     setProfilePicUrl(response.data.user.user_image_ref || '');  // Set profile picture URL if available
                 } else {
@@ -111,7 +114,7 @@ const Dashboard = () => {
             <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
 
             <div className="flex-1 flex justify-center items-center p-4">
-                <div key={profilePicUrl || userData?.user_image_ref} className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-lg">
+                <div key={profilePicUrl || userDetails?.user_image_ref} className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-lg">
                     <button
                         className="text-white p-2 bg-blue-500 rounded md:hidden"
                         onClick={toggleSidebar}
@@ -120,17 +123,17 @@ const Dashboard = () => {
                     </button>
 
                     <h1 className="text-2xl mt-4">My Account</h1>
-                    {userData ? (
+                    {userDetails ? (
                         <div>
-                            <h1>Welcome, {userData.name}!</h1>
+                            <h1>Welcome, {userDetails.name}!</h1>
 
                             {/* Display profile picture */}
                             <div className="mt-4 text-center">
-                                {userData?.user_image_ref ? (
+                                {userDetails?.user_image_ref ? (
                                     <img 
-                                        src={`https://team-2-cs673-deployment.onrender.com${userData.user_image_ref}`} 
-                                        alt="Profile Picture" 
-                                        className="w-32 h-32 rounded-full object-cover mx-auto"
+                                        src={`https://team-2-cs673-deployment.onrender.com${userDetails.user_image_ref}`}
+                                        alt="Profile Picture"
+                                        //className="w-32 h-32 rounded-full object-cover mx-auto"
                                     />
                                 ) : (
                                     <p className="text-gray-500">User does not have an image</p>
