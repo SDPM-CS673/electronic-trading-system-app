@@ -168,17 +168,25 @@ const MarketData = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredData.map((data, index) => (
-                        <tr key={index} className="hover:bg-gray-100 transition-all">
-                            <td className="border p-3">{index + 1}</td>
-                            <td className="border p-3">{data.product_name}</td>
-                            <td className="border p-3">{data.category_name}</td>
-                            <td className="border p-3">{data.best_buy_price}</td>
-                            <td className="border p-3">{data.best_sell_price}</td>
-                            <td className="border p-3">{data.best_buy_volume}</td>
-                            <td className="border p-3">{data.best_sell_volume}</td>
+                    {filteredData.length === 0 ? (
+                        <tr>
+                            <td colSpan="7" className="text-center py-4 text-gray-600">
+                                No data available
+                            </td>
                         </tr>
-                    ))}
+                    ) : (
+                        filteredData.map((data, index) => (
+                            <tr key={index} className="hover:bg-gray-100 transition-all">
+                                <td className="border p-3">{index + 1}</td>
+                                <td className="border p-3">{data.product_name}</td>
+                                <td className="border p-3">{data.category_name}</td>
+                                <td className="border p-3">{data.best_buy_price}</td>
+                                <td className="border p-3">{data.best_sell_price}</td>
+                                <td className="border p-3">{data.best_buy_volume}</td>
+                                <td className="border p-3">{data.best_sell_volume}</td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
         </div>
