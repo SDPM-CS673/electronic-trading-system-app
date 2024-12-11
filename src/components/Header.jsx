@@ -25,13 +25,13 @@ const Header = () => {
           </div>
 
           <div className="space-x-4">
-            <button
+            <button variant="outlined"
               className="text-white bg-primary px-4 py-2 rounded-md hover:bg-secondary"
               onClick={toggleLoginModal}
             >
               Login
             </button>
-            <button
+            <button variant="outlined"
               className="text-primary border border-primary px-4 py-2 rounded-md hover:bg-primary hover:text-white"
               onClick={toggleRegisterModal}
             >

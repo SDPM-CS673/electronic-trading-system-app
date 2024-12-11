@@ -5,9 +5,10 @@ import { Button, Card, Dialog, Input, Option, Select, Typography } from "@materi
 const MarketData = () => {
     const [activeTab, setActiveTab] = useState("Live"); // Tracks active tab
     const [searchText, setSearchText] = useState("");
-    const [selectedDate, setSelectedDate] = useState("");
+    const [startDate, setStartDate] = useState("");
     const [marketData, setMarketData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
+    const [endDate, setEndDate] = useState("");
 
     useEffect(() => {
         fetchMarketData();
@@ -31,7 +32,9 @@ const MarketData = () => {
                 return productIdMatches;
             }
             else {
-                const dateMatches = selectedDate ? data.date === selectedDate : true;
+                const dateMatches = startDate && endDate
+                    ? new Date(data.date) >= new Date(startDate) && new Date(data.date) <= new Date(endDate)
+                    : true;
                 return productIdMatches && dateMatches;
             }
         });
@@ -40,7 +43,7 @@ const MarketData = () => {
 
     useEffect(() => {
         filterTableData();
-    }, [searchText, selectedDate]);
+    }, [searchText, startDate, endDate]);
 
     return (
         <div className="p-6 bg-gray-50">
@@ -76,13 +79,31 @@ const MarketData = () => {
                     />
                 </div>
                 {activeTab === "Historic" && (
-                    <div>
-                        <Input
-                            type="date"
-                            value={selectedDate}
-                            onChange={(e) => setSelectedDate(e)}
-                            label="Enter Date"
-                        /></div>
+                    <div className="flex flex-row justify-between gap-4">
+                        <div>
+                            <Input
+                                type="date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e)}
+                                label="Enter Start Date"
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                type="date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e)}
+                                label="Enter End Date"
+                            />
+                        </div>
+                        <div>
+                            <Button
+                                onClick={() => resetDates()}
+                            >
+                                Reset
+                            </Button>
+                        </div>
+                    </div>
                 )}
             </div>
 

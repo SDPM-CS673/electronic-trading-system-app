@@ -20,17 +20,17 @@ const Header = ({ toggleSidebar }) => {
             </button>
 
 
-            <div className="text-2xl font-bold text-gray-300">
+            <div className="text-2xl font-bold text-white">
               <a href="/">uniTrade</a>
             </div>
 
           </div>
           {/* Header Buttons (visible on larger screens) */}
           <div className="space-x-4 lg:flex">
-            <Button >
+            <Button variant="outlined" className='bg-white' >
               Login
             </Button>
-            <Button>
+            <Button variant="outlined" className='bg-white'>
               Sign Up
             </Button>
           </div>
