@@ -6,9 +6,11 @@ const MarketData = () => {
     const [activeTab, setActiveTab] = useState("Live"); // Tracks active tab
     const [searchText, setSearchText] = useState("");
     const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
     const [marketData, setMarketData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
-    const [endDate, setEndDate] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState(""); // For category filter
+    const [categories, setCategories] = useState([]); // Store unique categories
 
     useEffect(() => {
         fetchMarketData();
@@ -20,6 +22,10 @@ const MarketData = () => {
             .then((response) => {
                 setMarketData(response);
                 setFilteredData(response);
+
+                // Extract unique categories
+                const uniqueCategories = [...new Set(response.map(item => item.category_name))];
+                setCategories(uniqueCategories);
             })
             .catch((error) => console.error(error));
     };
@@ -28,14 +34,15 @@ const MarketData = () => {
         const lowerSearch = searchText.toLowerCase();
         const filtered = marketData.filter((data) => {
             const productIdMatches = data.product_name.toLowerCase().includes(lowerSearch);
+            const categoryMatches = selectedCategory ? data.category_name === selectedCategory : true;
+            const dateMatches = startDate && endDate
+                ? new Date(data.last_update_time) >= new Date(startDate) && new Date(data.last_update_time) <= new Date(endDate)
+                : true;
+
             if (activeTab === "Live") {
-                return productIdMatches;
-            }
-            else {
-                const dateMatches = startDate && endDate
-                    ? new Date(data.date) >= new Date(startDate) && new Date(data.date) <= new Date(endDate)
-                    : true;
-                return productIdMatches && dateMatches;
+                return productIdMatches && categoryMatches;
+            } else {
+                return productIdMatches && categoryMatches && dateMatches;
             }
         });
         setFilteredData(filtered);
@@ -43,25 +50,25 @@ const MarketData = () => {
 
     useEffect(() => {
         filterTableData();
-    }, [searchText]);
+    }, [searchText, selectedCategory]);
 
     const resetDates = () => {
         setStartDate("");
         setEndDate("");
         setSearchText("");
-    }
+        setSelectedCategory(""); // Reset category filter
+    };
 
     const dateChange = (e, type) => {
         if (type === "start") {
             setStartDate(e.target.value);
-        }
-        else {
+        } else {
             setEndDate(e.target.value);
         }
         if (!startDate && !endDate) {
             filterTableData();
         }
-    }
+    };
 
     return (
         <div className="p-6 bg-gray-50">
@@ -70,16 +77,14 @@ const MarketData = () => {
             {/* Tabs */}
             <div className="flex mb-6">
                 <Button
-                    className={`${activeTab === "Live" ? "bg-blue-600" : ""
-                        }`}
-                    onClick={() => { setActiveTab("Live"); resetDates("") }}
+                    className={`${activeTab === "Live" ? "bg-blue-600" : ""}`}
+                    onClick={() => { setActiveTab("Live"); resetDates(); }}
                 >
                     Live
                 </Button>
                 <Button
-                    className={`${activeTab === "Historic" ? "bg-blue-600" : ""
-                        }`}
-                    onClick={() => { setActiveTab("Historic"); resetDates("") }}
+                    className={`${activeTab === "Historic" ? "bg-blue-600" : ""}`}
+                    onClick={() => { setActiveTab("Historic"); resetDates(); }}
                 >
                     Historic
                 </Button>
@@ -87,14 +92,27 @@ const MarketData = () => {
 
             {/* Filters */}
             <div className="mb-6 flex justify-between">
-                <div>
-                    <Input
-                        type="text"
-                        label="Search by Product ID"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-
-                    />
+                <div className="flex flex-row gap-4">
+                    <div>
+                        <Input
+                            type="text"
+                            label="Search by Product ID"
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                        />
+                    </div>
+                    {/* Category Filter */}
+                    <div>
+                        <Select
+                            label="Select Category"
+                            value={selectedCategory}
+                        >
+                            <Option onSelect={() => setSelectedCategory("")} value="">All Categories</Option>
+                            {categories.map((category, index) => (
+                                <Option onSelect={() => setSelectedCategory(value)} key={category} value={category}>{category}</Option>
+                            ))}
+                        </Select>
+                    </div>
                 </div>
                 {activeTab === "Historic" && (
                     <div className="flex flex-row justify-between gap-4">
@@ -103,7 +121,6 @@ const MarketData = () => {
                                 type="date"
                                 value={startDate}
                                 max={new Date().toISOString().split("T")[0]}
-
                                 onChange={(e) => dateChange(e, "start")}
                                 label="Enter Start Date"
                             />
@@ -118,14 +135,12 @@ const MarketData = () => {
                             />
                         </div>
                         <div>
-                            <Button
-                                onClick={() => resetDates()}
-                            >
-                                Reset
-                            </Button>
+                            <Button onClick={() => resetDates()}>Reset</Button>
                         </div>
                     </div>
                 )}
+
+
             </div>
 
             {/* Table */}
@@ -134,6 +149,7 @@ const MarketData = () => {
                     <tr className="bg-gray-200">
                         <th className="border p-3 text-left">Sr No</th>
                         <th className="border p-3 text-left">Product ID</th>
+                        <th className="border p-3 text-left">Category</th>
                         <th className="border p-3 text-left">Best Buy Price</th>
                         <th className="border p-3 text-left">Best Sell Price</th>
                         <th className="border p-3 text-left">Best Buy Volume</th>
@@ -145,6 +161,7 @@ const MarketData = () => {
                         <tr key={index} className="hover:bg-gray-100 transition-all">
                             <td className="border p-3">{index + 1}</td>
                             <td className="border p-3">{data.product_name}</td>
+                            <td className="border p-3">{data.category_name}</td>
                             <td className="border p-3">{data.best_buy_price}</td>
                             <td className="border p-3">{data.best_sell_price}</td>
                             <td className="border p-3">{data.best_buy_volume}</td>
