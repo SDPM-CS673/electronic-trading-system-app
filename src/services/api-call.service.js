@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiOrigin = process.env.VITE_TEAM3_API_URL;
+const apiOrigin = "https://trade-match-maintain-api.onrender.com";
 const apiOrigins = {
     "team1": "https://trade-match-maintain-api.onrender.com",
     "team2": "https://trade-match-maintain-api.onrender.com",
@@ -16,12 +16,12 @@ const apiOrigins = {
  * @param {string} [responseType] - The type of data expected in the response. Defaults to "json".
  * @returns {Promise<any>} - A promise that resolves with the response data.
  */
-export const get = (url, baseURL, responseType) => {
+export const get = (url, originKey, responseType) => {
     return new Promise((resolve, reject) => {
         axios({
             method: "get",
             url: url,
-            baseURL: baseURL || apiOrigin,
+            baseURL: originKey && apiOrigins[originKey] ? apiOrigins[originKey] : apiOrigin,
             responseType: responseType || "json",
             withCredentials: true,
             headers: {
@@ -52,16 +52,16 @@ export const get = (url, baseURL, responseType) => {
  * 
  * @param {string} url - The endpoint URL to send the POST request to.
  * @param {any} data - The data to be sent in the POST request body.
- * @param {string} [baseURL] - The base URL for the request. Defaults to `apiOrigin`.
+ * @param {string} [baseURL] - The base URL for the request. Defaults to `apiOrigins`.
  * @param {string} [responseType] - The type of data expected in the response. Defaults to "json".
  * @returns {Promise<any>} - A promise that resolves with the response data.
  */
-export const post = (url, data, baseURL, responseType) => {
+export const post = (url, data, originKey, responseType) => {
     return new Promise((resolve, reject) => {
         axios({
             method: "post",
             url: url,
-            baseURL: baseURL || apiOrigin,
+            baseURL: originKey && apiOrigins[originKey] ? apiOrigins[originKey] : apiOrigin,
             responseType: responseType || "json",
             withCredentials: true,
             data: data,

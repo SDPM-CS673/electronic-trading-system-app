@@ -4,7 +4,7 @@ import { showMessage } from "../../services/message.service";
 const OrderEntry = ({ close }) => {
 
     const saveData = () => {
-        post("/order/add", {}, process.env.VITE_TEAM3_API_URL).then((result) => {
+        post("/order/add", {}, "team3").then((result) => {
             showMessage("Order added successfully", "success");
             close(true);
         }).catch((error) => {
