@@ -24,7 +24,7 @@ const Header = ({ toggleSidebar }) => {
   }
   return (
     <header className="bg-black shadow-md w-full top-0 fixed "> {/* Fixed header with z-index */}
-      <div className="max-w-7xl mx-auto px-3">
+      <div className=" mx-auto px-3">
         <div className="flex justify-between items-center py-4">
 
           <div className='flex flex-row gap-2'>

@@ -8,7 +8,6 @@ import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "./context/AuthContext";  // Import useAuth hook
-import AuthGuard from "./context/AuthGuard";  // Import AuthGuard component
 
 function App() {
 
@@ -21,7 +20,7 @@ function App() {
 
   // Render routes dynamically
   const renderRoutes = (routes, parentPath = "") => {
-    return routes.map(({ path, component, children, parameters, requiresAuth }) => {
+    return routes.map(({ path, component, children, parameters }) => {
       const ComponentToRender = Pages[component];  // Dynamically access component
 
       // If component is not found, log an error
@@ -37,15 +36,11 @@ function App() {
           {renderRoutes(children, `${parentPath}${path}/`)}
         </Route>
       ) : (
-        requiresAuth ? (<Route
-          key={path}
-          path={paramRoute ? `${parentPath}${path}${paramRoute}` : `${parentPath}${path}`}
-          element={<AuthGuard><ComponentToRender /></AuthGuard>} // Dynamically render the component
-        />) : (<Route
+        <Route
           key={path}
           path={paramRoute ? `${parentPath}${path}${paramRoute}` : `${parentPath}${path}`}
           element={<ComponentToRender />} // Dynamically render the component
-        />)
+        />
       );
     });
   };
