@@ -3,6 +3,7 @@ import { post, get } from "../services/api-call.service";
 import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
 import { showMessage } from '../services/message.service';
 
+
 const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory }) => {
   const [categoryId, setCategoryId] = useState('');
   const [discription, setdescription] = useState('');
@@ -30,7 +31,7 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
     if (isEdit) {
       const category = { id: categoryData.id, name: categoryName.trim(), discription: discription.trim(), attribute1: attributes.attribute1.trim(), attribute2: attributes.attribute2.trim(), attribute3: attributes.attribute3.trim(), attribute4: attributes.attribute4.trim(), status: statusPayload };
       console.log('Edit Category', category);
-      post('/api/category/' + categoryData.id, category, 'http://localhost:3000')
+      post('/api/category/' + categoryData.id, category, "team1")
         .then((response) => {
           console.log(response);
           saveCategory(category);
@@ -45,7 +46,7 @@ const AddNewCategoryModal = ({ closeModal, categoryData, isEdit, saveCategory })
 
       const category = { name: categoryName.trim().toLowerCase(), discription: discription.trim(), attribute1: attributes.attribute1.trim(), attribute2: attributes.attribute2.trim(), attribute3: attributes.attribute3.trim(), attribute4: attributes.attribute4.trim(), status: statusPayload };
       console.log('Save Category', category);
-      post('/api/categories', category, 'http://localhost:3000')
+      post('/api/categories', category, "team1")
         .then((response) => {
           console.log(response);
           saveCategory(category);

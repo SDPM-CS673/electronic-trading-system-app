@@ -1,0 +1,109 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { getUserDetail } from "../services/user.service";
+
+const UserReports = () => {
+    const [userId, setUserId] = useState("");
+    const [tradeList, setTradeList] = useState([]);
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const TABLE_HEAD = [
+        "Order ID",
+        "Trade Date & Time",
+        "Quantity",
+        "Side",
+        "Product Name",
+        "Trade Margin"
+    ];
+
+    useEffect(() => {
+        const userDetail = getUserDetail();
+        console.log("User detail:", userDetail); // Debug log
+        if (userDetail && userDetail.user_id) {
+            setUserId(userDetail.user_id); // Set user_id from the helper function
+        } else {
+            console.error("User ID not found in user details.");
+        }
+    }, []);
+
+    useEffect(() => {
+        if (userId) {
+            console.log("Fetching trade reports for userId:", userId); // Debug log
+            fetchTradeList();
+        }
+    }, [userId]);
+
+    const fetchTradeList = async () => {
+        if (!userId) {
+            setError("User ID not found. Please log in.");
+            return;
+        }
+
+        setIsLoading(true);
+        setError("");
+
+        try {
+            const url = `https://cs673backend.onrender.com/report/${userId}`;
+            console.log("API URL:", url); // Debug log
+            const response = await axios.post(url);
+            console.log("API Response:", response.data); // Debug log
+
+            if (!response.data.trades || response.data.trades.length === 0) {
+                setError("No trades found.");
+            }
+            setTradeList(response.data.trades || []);
+        } catch (error) {
+            console.error("Error fetching trade reports:", error); // Debug log
+            setError("Failed to fetch trade data. Please try again.");
+            setTradeList([]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <div className="h-full w-full">
+            <h1 className="text-xl font-bold mb-4">User Trade Reports</h1>
+
+            {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
+
+            <div className="flex flex-col">
+                <div className="overflow-auto border rounded-md">
+                    <table className="w-full table-auto text-left">
+                        <thead className="bg-gray-100">
+                            <tr>
+                                {TABLE_HEAD.map((head) => (
+                                    <th key={head} className="p-4 border-b font-medium text-gray-700">
+                                        {head}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tradeList.map((trade, index) => {
+                                const isLast = index === tradeList.length - 1;
+                                const classes = isLast ? "p-4" : "p-4 border-b border-gray-200";
+
+                                return (
+                                    <tr key={trade.order_id} className="hover:bg-gray-50">
+                                        <td className={classes}>{trade.order_id}</td>
+                                        <td className={classes}>{trade.trade_date_time}</td>
+                                        <td className={classes}>{trade.trade_qty}</td>
+                                        <td className={classes}>{trade.side}</td>
+                                        <td className={classes}>{trade.product_name}</td>
+                                        <td className={classes}>{trade.trade_margin}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+
+                {isLoading && <p className="text-gray-500 text-center mt-4">Loading...</p>}
+            </div>
+        </div>
+    );
+};
+
+export default UserReports;

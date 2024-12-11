@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getUserDetail } from "../services/user.service";
 
+const BASE_URL = "https://cs673backend.onrender.com";
+
 const Wallet = () => {
     const [userId, setUserId] = useState("");
     const [wallet, setWallet] = useState(null);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [amount, setAmount] = useState("");
-    const [transactions, setTransactions] = useState([]); // Initialize transactions as an empty array
+    const [transactions, setTransactions] = useState([]);
+    const [filterType, setFilterType] = useState("this-week");
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const userDetail = getUserDetail();
@@ -23,10 +27,9 @@ const Wallet = () => {
             return;
         }
         try {
-            const response = await axios.get(`http://localhost:3000/wallet/${userId}`);
+            const response = await axios.get(`${BASE_URL}/wallet/${userId}`);
             setWallet(response.data.wallet);
             setError("");
-            setSuccess("");
         } catch (error) {
             console.error("Error fetching wallet details:", error);
             setWallet(null);
@@ -36,11 +39,19 @@ const Wallet = () => {
 
     const fetchTransactions = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/wallet/logs/${userId}`);
-            setTransactions(response.data);
+            setIsLoading(true);
+            const response = await axios.get(
+                `${BASE_URL}/wallet/logs/${userId}?filter=${filterType}`
+            );
+            const sortedTransactions = response.data.sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            );
+            setTransactions(sortedTransactions);
         } catch (error) {
             console.error("Error fetching transaction logs:", error);
-            setTransactions([]); // Set as empty array in case of error
+            setTransactions([]);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -49,62 +60,58 @@ const Wallet = () => {
             fetchWalletDetails();
             fetchTransactions();
         }
-    }, [userId]);
+    }, [userId, filterType]);
 
-    const handleAdd = async () => {
+    const handleTransaction = async (type) => {
         if (!amount || isNaN(amount) || Number(amount) <= 0) {
-            setError("Please enter a valid amount to add.");
+            setError(`Please enter a valid amount to ${type}.`);
             return;
         }
+
+        const numAmount = Number(amount);
+
+        if (type === "deduct") {
+            const availableBalance = Number(wallet.available_balance - wallet.current_softblock);
+            if (availableBalance < numAmount) {
+                setError(`Cannot deduct given amount as standing balance is lower than the amount ${numAmount.toFixed(2)}`);
+                return;
+            }
+        }
+
+        setIsLoading(true);
+        setError("");
+        setSuccess("");
+
         try {
-            const response = await axios.post("http://localhost:3000/wallet/update", {
+            const response = await axios.post(`${BASE_URL}/wallet/update`, {
                 user_id: userId,
-                type: "add",
-                amount: Number(amount),
+                type,
+                amount: numAmount
             });
+
             setWallet({ ...wallet, available_balance: response.data.new_balance });
-            fetchTransactions(); // Refresh transactions after add
-            setAmount(""); // Clear the input field
-            setError("");
-            setSuccess("Amount added successfully!");
+            await fetchTransactions();
+            setAmount("");
+            setSuccess(`Amount ${type}ed successfully!`);
         } catch (error) {
-            console.error("Error adding money:", error);
-            setError("Failed to add money. Please try again.");
+            console.error(`Error ${type}ing money:`, error);
+            const errorMessage = error.response?.data?.error || `Failed to ${type} money. Please try again.`;
+            setError(errorMessage);
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const handleDeduct = async () => {
-        if (!amount || isNaN(amount) || Number(amount) <= 0) {
-            setError("Please enter a valid amount to deduct.");
-            return;
-        }
-        if (Number(amount) > wallet.available_balance) {
-            setError("Insufficient balance.");
-            return;
-        }
-        try {
-            const response = await axios.post("http://localhost:3000/wallet/update", {
-                user_id: userId,
-                type: "deduct",
-                amount: Number(amount),
-            });
-            setWallet({ ...wallet, available_balance: response.data.new_balance });
-            fetchTransactions(); // Refresh transactions after deduct
-            setAmount(""); // Clear the input field
-            setError("");
-            setSuccess("Amount deducted successfully!");
-        } catch (error) {
-            console.error("Error deducting money:", error);
-            setError("Failed to deduct money. Please try again.");
-        }
-    };
+    const handleAdd = () => handleTransaction("add");
+    const handleDeduct = () => handleTransaction("deduct");
 
     return (
         <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-            {/* Account Balance Section */}
             <div className="mb-6 p-4 bg-gray-100 rounded-md">
                 <h1 className="text-2xl font-bold text-center mb-4">Available Balance</h1>
-                <p className="text-4xl font-semibold text-center">${wallet && wallet.available_balance ? Number(wallet.available_balance).toFixed(2) : "0.00"}</p>
+                <p className="text-4xl font-semibold text-center">
+                    ${wallet && wallet.available_balance ? Number(wallet.available_balance).toFixed(2) : "0.00"}
+                </p>
                 <div className="mt-4">
                     <input
                         type="text"
@@ -112,19 +119,22 @@ const Wallet = () => {
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                        disabled={isLoading}
                     />
-                    <div className="flex justify-between mt-2">
+                    <div className="grid grid-cols-2 gap-4 mt-2">
                         <button
                             onClick={handleAdd}
-                            className="w-1/2 p-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 mr-2"
+                            className="p-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 disabled:opacity-50"
+                            disabled={isLoading}
                         >
-                            Add
+                            {isLoading ? "Processing..." : "Add"}
                         </button>
                         <button
                             onClick={handleDeduct}
-                            className="w-1/2 p-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 ml-2"
+                            className="p-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 disabled:opacity-50"
+                            disabled={isLoading}
                         >
-                            Deduct
+                            {isLoading ? "Processing..." : "Deduct"}
                         </button>
                     </div>
                 </div>
@@ -132,44 +142,55 @@ const Wallet = () => {
                 {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
             </div>
 
-            {/* Transaction Logs Section */}
             <div className="p-6 bg-gray-100 rounded-md w-full mt-6">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold">Transaction Logs</h2>
+                    <select
+                        value={filterType}
+                        onChange={(e) => setFilterType(e.target.value)}
+                        className="p-2 border border-gray-300 rounded-md"
+                        disabled={isLoading}
+                    >
+                        <option value="this-week">This Week</option>
+                        <option value="this-month">This Month</option>
+                        <option value="this-year">This Year</option>
+                    </select>
                 </div>
-                {transactions?.length > 0 ? (
-                    <table className="w-full border border-gray-300 text-left">
-                        <thead>
-                            <tr>
-                                <th className="p-2 border-b">Date/Time</th>
-                                <th className="p-2 border-b">Action</th>
-                                <th className="p-2 border-b">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {transactions.map((transaction, index) => (
-                                <tr key={index}>
-                                    <td className="p-2 border-b">
-                                        {new Date(transaction.date).toLocaleString("en-US", {
-                                            year: "numeric",
-                                            month: "2-digit",
-                                            day: "2-digit",
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                            hour12: true,
-                                        })}
-                                    </td>
-                                    <td className={`p-2 border-b ${transaction.action === "credit" ? "text-green-500" : "text-red-500"}`}>
-                                        {transaction.action === "credit" ? "Add" : "Deduct"}
-                                    </td>
-                                    <td className="p-2 border-b">${Number(transaction.amount).toFixed(2)}</td>
+                <div className="max-h-80 overflow-y-auto">
+                    {isLoading ? (
+                        <p className="text-center py-4">Loading transactions...</p>
+                    ) : transactions?.length > 0 ? (
+                        <table className="w-full border border-gray-300 text-left">
+                            <thead className="sticky top-0 bg-white">
+                                <tr>
+                                    <th className="p-2 border-b">Date/Time</th>
+                                    <th className="p-2 border-b">Action</th>
+                                    <th className="p-2 border-b">Amount</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                ) : (
-                    <p className="text-gray-500 text-center">No transactions available for this period.</p>
-                )}
+                            </thead>
+                            <tbody>
+                                {transactions.map((transaction, index) => (
+                                    <tr key={index} className="hover:bg-gray-50">
+                                        <td className="p-2 border-b">
+                                            {new Date(transaction.date).toLocaleString("en-US", {
+                                                year: "numeric",
+                                                month: "2-digit",
+                                                day: "2-digit",
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                                hour12: true,
+                                            })}
+                                        </td>
+                                        <td className="p-2 border-b">{transaction.action}</td>
+                                        <td className="p-2 border-b">${Number(transaction.amount).toFixed(2)}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <p className="text-gray-500 text-center">No transactions available for this period.</p>
+                    )}
+                </div>
             </div>
         </div>
     );
