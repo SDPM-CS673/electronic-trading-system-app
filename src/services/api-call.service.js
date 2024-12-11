@@ -20,6 +20,7 @@ export const get = (url, baseURL, responseType) => {
             withCredentials: true,
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("jwtToken") ? `${JSON.parse(localStorage.getItem("jwtToken"))}` : null
             }
         }).then((response) => {
             if (response.data && response.data.data) {
@@ -60,6 +61,7 @@ export const post = (url, data, baseURL, responseType) => {
             data: data,
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("jwtToken") ? `${JSON.parse(localStorage.getItem("jwtToken"))}` : null
             }
         }).then((response) => {
             if (response.data && response.data.data) {
