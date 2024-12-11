@@ -1,7 +1,7 @@
-const withMT = require("@material-tailwind/react/utils/withMT");
+import withMT from "@material-tailwind/react/utils/withMT";
 
 /** @type {import('tailwindcss').Config} */
-module.exports = withMT({
+export default withMT({
   darkMode: ["class"],  // Enables dark mode based on a class toggle
   content: [
     "./index.html",

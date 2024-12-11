@@ -17,7 +17,7 @@ const MarketData = () => {
     }, [activeTab]);
 
     const fetchMarketData = () => {
-        const endpoint = activeTab === "Live" ? "/api/allMarketData" : "/api/historicMarketData";
+        const endpoint = activeTab === "Live" ? "/api/liveData" : "/api/historicData";
         get(endpoint, "http://localhost:3000")
             .then((response) => {
                 setMarketData(response);
