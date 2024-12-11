@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { get, post } from "../services/api-call.service";
+import { Link } from "react-router-dom";
 
 const ProductListPage = () => {
   const [categories, setCategories] = useState([]);
@@ -25,20 +26,28 @@ const ProductListPage = () => {
   }
 
 
+  const encodeProductData = (product) => {
+    // Use URLSearchParams to convert product data into a query string
+    const jsonString = JSON.stringify(product);
+    return btoa(jsonString);
+  };
+
   const ProductCard = ({ product }) => {
     return (
-      <div className="bg-gray-800 rounded-lg shadow-md p-4 w-60 flex-shrink-0 transition-all hover:cursor-pointer">
-        <h3 className="text-lg font-bold text-white mb-2">{product.name}</h3>
-        <ul className="text-sm text-gray-300">
-          {product.attributes &&
-            Object.entries(product.attributes).map(([key, value]) => (
-              <li key={key} className="mb-1">
-                <span className="font-medium text-gray-400">{key}: </span>
-                <span>{value}</span>
-              </li>
-            ))}
-        </ul>
-      </div>
+      <Link to={`/trades/list?product=${encodeProductData(product)}`}>
+        <div className="rounded-lg bg-white shadow-md p-4  min-w-60 flex-shrink-0 transition-all hover:cursor-pointer">
+          <h3 className="text-lg font-bold text-black mb-2">{product.name}</h3>
+          <ul className="text-sm text-black">
+            {product.attributes &&
+              Object.entries(product.attributes).map(([key, value]) => (
+                <li key={key} className="mb-1">
+                  <span className="font-medium text-black">{key}: </span>
+                  <span>{value}</span>
+                </li>
+              ))}
+          </ul>
+        </div>
+      </Link>
     );
   };
 
@@ -62,13 +71,13 @@ const ProductListPage = () => {
         <div className="relative">
           <button
             onClick={() => scroll("left")}
-            className="absolute left-0 bg-black top-0 transform translate-y-1/2 text-white p-4 rounded-full shadow-md  text-3xl transition-all hover:scale-110"
+            className="absolute left-0 top-[20px] transform translate-y-1/2 text-black p-4 rounded-full  text-3xl transition-all hover:scale-110"
           >
             &lt;
           </button>
           <button
             onClick={() => scroll("right")}
-            className="absolute right-0 bg-black top-0 transform translate-y-1/2 text-white p-4 rounded-full shadow-md  text-3xl transition-all hover:scale-110"
+            className="absolute right-0 top-[20px] transform translate-y-1/2 text-black p-4 rounded-full  text-3xl transition-all hover:scale-110"
           >
             &gt;
           </button>

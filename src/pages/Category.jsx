@@ -19,8 +19,12 @@ const Category = () => {
     get("/api/allCategories", "http://localhost:3000")
       .then((response) => {
         console.log(response);
-        setCategories(response.categories);
-        setFilteredCategories(response.categories);
+        if (response.categories) {
+          setCategories(response.categories);
+          setFilteredCategories(response.categories);
+        } else {
+          showMessage(error, 'error');
+        }
       })
       .catch((error) => {
         console.log(error);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AddNewProductModal from './AddNewProductModal'; // Import the modal component
 import { post, get } from "../services/api-call.service";
 import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
+import { showMessage } from '../services/message.service';
 
 const Product = () => {
 
@@ -17,11 +18,16 @@ const Product = () => {
         get("/api/productWithCategory", "http://localhost:3000")
             .then((response) => {
                 console.log(response);
-                setProducts(response.products);
-                setFilteredProducts(response.products);
+                if (response.products) {
+                    setProducts(response.products);
+                    setFilteredProducts(response.products);
+                } else {
+                    showMessage(error, 'error');
+                }
             })
             .catch((error) => {
                 console.log(error);
+                showMessage(error, 'error');
             });
     }
 

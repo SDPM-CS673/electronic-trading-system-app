@@ -3,15 +3,15 @@ import { Routes, Route } from "react-router-dom";  // Ensure correct imports
 import * as Pages from "./pages";  // Import everything from pages/index.js
 import { routeGroups } from "./routes"; // Import your routeGroups
 import Sidebar from "./pages/Sidebar";  // Import Sidebar correctly
-import Header from "./components/landing-page/Header/page";
-import Footer from "./components/landing-page/Footer/page";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "./context/AuthContext";  // Import useAuth hook
 
 function App() {
 
-  const { login, logout, user, isLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false); // Sidebar is initially close
 
   const toggleSidebar = () => {
@@ -53,11 +53,11 @@ function App() {
         {isLoggedIn && < Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />}
 
         {/* Main Content Area */}
-        <div className={`flex-1 ml-${sidebarOpen ? '64' : '20'} flex-col h-screen w-full`}>
+        <div className={`flex-1 flex-col justify-between h-screen w-full transition-all duration-300 ease-in-out`}>
           <div className={'h-[10%] '}>
             <Header toggleSidebar={toggleSidebar} />
           </div>
-          <div style={isLoggedIn ? { paddingLeft: sidebarOpen ? '12%' : '6%' } : { paddingTop: '1rem', paddingBottom: '1rem' }} className="h-[95%] overflow-auto">
+          <div style={isLoggedIn ? { paddingLeft: sidebarOpen ? '12%' : '6%' } : { paddingTop: '1rem' }} className="h-[85%] overflow-auto">
             <Routes>{renderRoutes(routeGroups)}</Routes>  {/* Dynamically render routes */}
           </div>
           <div className={'h-[5%]'}>
