@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
                 setUserDetails(result);
                 setIsAdmin(result.admin_status)
                 setIsLoggedIn(true);
+                navigate("/product/list")
             }
             setSessionLoad(true);
         }).catch((error) => {
