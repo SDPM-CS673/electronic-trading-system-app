@@ -19,7 +19,7 @@ const Login = () => {
   };
 
   const doLogin = () => {
-    post("/auth/login", formData, "http://localhost:7001").then((result) => {
+    post("/auth/login", formData, process.env.TEAM3_API_URL).then((result) => {
       // Save the token in localStorage
       localStorage.setItem("jwtToken", JSON.stringify(result.token));
       delete result.token;

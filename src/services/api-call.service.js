@@ -1,6 +1,12 @@
 import axios from "axios";
 
-const apiOrigin = "http://localhost:7001";
+const apiOrigin = process.env.TEAM3_API_URL;
+const apiOrigins = {
+    "team1": "https://trade-match-maintain-api.onrender.com",
+    "team2": "https://trade-match-maintain-api.onrender.com",
+    "team3": "https://trade-match-maintain-api.onrender.com",
+    "team4": "https://trade-match-maintain-api.onrender.com",
+}
 
 /**
  * Makes a GET request to the specified URL.

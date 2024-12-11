@@ -4,7 +4,7 @@ import { showMessage } from "../../services/message.service";
 const OrderEntry = ({ close }) => {
 
     const saveData = () => {
-        post("/order/add", {}, "http://localhost:7001").then((result) => {
+        post("/order/add", {}, process.env.TEAM3_API_URL).then((result) => {
             showMessage("Order added successfully", "success");
             close(true);
         }).catch((error) => {
