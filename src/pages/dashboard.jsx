@@ -51,8 +51,12 @@ const Dashboard = () => {
 
             console.log(response.data);
             if (response.data.success) {
-                setProfilePicUrl(response.data.profilePicUrl);  // Update the profile picture URL
-                setUserData({ ...userData, profilePicUrl: response.data.profilePicUrl }); // Optionally update user data
+                const newProfilePicUrl = response.data.profilePicUrl;
+                setUserData((prevUserData) => ({
+                    ...prevUserData,
+                    user_image_ref: newProfilePicUrl,
+                }));
+                setProfilePicUrl(newProfilePicUrl);  // Optional, if `profilePicUrl` is being used elsewhere
             } else {
                 setError("Failed to upload profile picture.");
             }
@@ -84,7 +88,7 @@ const Dashboard = () => {
                 if (response.data.success) {
                     console.log("RESPONSE SUCCESS", response.data.user);
                     setUserData(response.data.user);
-                    setProfilePicUrl(response.data.user.user_image_ref|| '');  // Set profile picture URL if available
+                    setProfilePicUrl(response.data.user.user_image_ref || '');  // Set profile picture URL if available
                 } else {
                     setError('Failed to fetch user data. Please try again later.');
                 }
@@ -107,7 +111,7 @@ const Dashboard = () => {
             <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
 
             <div className="flex-1 flex justify-center items-center p-4">
-                <div className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-lg">
+                <div key={profilePicUrl || userData?.user_image_ref} className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-lg">
                     <button
                         className="text-white p-2 bg-blue-500 rounded md:hidden"
                         onClick={toggleSidebar}
