@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getUserDetail } from "../services/user.service";
 
-
-const UserReport = () => {
+const UserReports = () => {
     const [userId, setUserId] = useState("");
     const [tradeList, setTradeList] = useState([]);
     const [error, setError] = useState("");
@@ -20,14 +19,18 @@ const UserReport = () => {
 
     useEffect(() => {
         const userDetail = getUserDetail();
+        console.log("User detail:", userDetail); // Debug log
         if (userDetail && userDetail.user_id) {
-            setUserId(userDetail.user_id);
+            setUserId(userDetail.user_id); // Set user_id from the helper function
+        } else {
+            console.error("User ID not found in user details.");
         }
     }, []);
 
     useEffect(() => {
         if (userId) {
-            fetchTradeList(); // Fetch trade reports for the user when userId is available
+            console.log("Fetching trade reports for userId:", userId); // Debug log
+            fetchTradeList();
         }
     }, [userId]);
 
@@ -41,15 +44,17 @@ const UserReport = () => {
         setError("");
 
         try {
-            const response = await axios.post(
-                `https://cs673backend.onrender.com/report/${userId}`
-            );
+            const url = `https://cs673backend.onrender.com/report/${userId}`;
+            console.log("API URL:", url); // Debug log
+            const response = await axios.post(url);
+            console.log("API Response:", response.data); // Debug log
+
             if (!response.data.trades || response.data.trades.length === 0) {
                 setError("No trades found.");
             }
             setTradeList(response.data.trades || []);
         } catch (error) {
-            console.error("Error fetching trade reports:", error);
+            console.error("Error fetching trade reports:", error); // Debug log
             setError("Failed to fetch trade data. Please try again.");
             setTradeList([]);
         } finally {
@@ -101,4 +106,4 @@ const UserReport = () => {
     );
 };
 
-export default UserReport;
+export default UserReports;
