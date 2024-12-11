@@ -15,6 +15,7 @@ const Header = ({ toggleSidebar }) => {
   const doLogOut = () => {
     localStorage.removeItem('jwtToken');
     logout();
+    naviagte('/');
     showMessage('Logged out successfully', 'success');
   }
 
@@ -47,7 +48,7 @@ const Header = ({ toggleSidebar }) => {
               <Button variant="outlined" onClick={goToLogIn} className='bg-white' >
                 Login
               </Button>}
-            {!isLoggedIn && <Button variant="outlined"  onClick={goToSignUp} className='bg-white'>
+            {!isLoggedIn && <Button variant="outlined" onClick={goToSignUp} className='bg-white'>
               Sign Up
             </Button>}
             {
