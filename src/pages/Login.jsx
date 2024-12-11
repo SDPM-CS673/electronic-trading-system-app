@@ -1,87 +1,58 @@
-import React, { useState } from 'react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { post } from "../services/api-call.service"; // Ensure the import path is correct
+import { Input, Button } from "@material-tailwind/react";
+import { useAuth } from "../context/AuthContext";  // Import useAuth hook
+import { showMessage } from "../services/message.service";
 
-const Login = ({ toggleRegisterModal }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [successMessages, setSuccessMessages] = useState([]);
+const Login = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Handle the login logic
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      setSuccessMessages(result.success);
-      // Close modal logic can be here if needed
-    } else {
-      setErrorMessages(result.error);
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const doLogin = () => {
+    post("/auth/login", formData, "http://localhost:7001").then((result) => {
+      // Save the token in localStorage
+      localStorage.setItem("jwtToken", JSON.stringify(result.token));
+      delete result.token;
+      login(result);
+      showMessage("Login successful!", "success");
+      navigate("/home");
+    }).catch((error) => {
+      console.error(error);
+      showMessage("Login failed! Please check your credentials.", "error");
+    });
+  }
+
   return (
-    <div>
-      <h2 className="text-xl font-semibold text-center mb-4">Login</h2>
-
-      {/* Display error messages */}
-      {errorMessages.length > 0 && (
-        <div className="bg-red-500 text-white p-4 rounded mb-4">
-          <ul>
-            {errorMessages.map((message, index) => (
-              <li key={index}>{message}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Display success messages */}
-      {successMessages.length > 0 && (
-        <div className="bg-green-500 text-white p-4 rounded mb-4">
-          <ul>
-            {successMessages.map((message, index) => (
-              <li key={index}>{message}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
+    <div className="container mx-auto mt-20 p-6 max-w-lg bg-white rounded-lg shadow-md">
+      <h1 className="text-3xl font-semibold text-center mb-6">Login</h1>
       {/* Login Form */}
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        />
+      {/* <form onSubmit={doLogin}> */}
+        <div className="mb-4">
+          <Input variant="standard" label="Email" placeholder="Email" size="lg" value={formData.email} id="email" name="email" onChange={handleChange} />
+        </div>
+        <div className="mb-6">
+          <Input type="password" variant="standard" label="Password" placeholder="Password" size="lg" value={formData.password} id="password" name="password" onChange={handleChange} />
+        </div>
+        <Button type="submit" size="lg" className="w-full" onClick={doLogin} disabled={!formData.email || !formData.password}>LogIn</Button>
+      {/* </form> */}
 
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mt-4">Password</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        />
-
-        <button type="submit" className="w-full mt-6 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          Login
-        </button>
-      </form>
-
-      
+      <p className="mt-4 text-center">
+        Don’t have an account?{" "}
+        <a href="/register" className="text-blue-500 hover:underline">
+          Register here
+        </a>
+        .
+      </p>
     </div>
   );
 };
