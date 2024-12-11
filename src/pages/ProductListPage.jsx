@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { get, post } from "../services/api-call.service";
+import { Link } from "react-router-dom";
 
 const ProductListPage = () => {
   const [categories, setCategories] = useState([]);
@@ -25,20 +26,27 @@ const ProductListPage = () => {
   }
 
 
+  const encodeProductData = (product) => {
+    // Use URLSearchParams to convert product data into a query string
+    return new URLSearchParams(product).toString();
+  };
+
   const ProductCard = ({ product }) => {
     return (
-      <div className="bg-gray-800 rounded-lg shadow-md p-4 w-60 flex-shrink-0 transition-all hover:cursor-pointer">
-        <h3 className="text-lg font-bold text-white mb-2">{product.name}</h3>
-        <ul className="text-sm text-gray-300">
-          {product.attributes &&
-            Object.entries(product.attributes).map(([key, value]) => (
-              <li key={key} className="mb-1">
-                <span className="font-medium text-gray-400">{key}: </span>
-                <span>{value}</span>
-              </li>
-            ))}
-        </ul>
-      </div>
+      <Link to={`/trades/list?product=${encodeProductData(product)}`}>
+        <div className="bg-gray-800 rounded-lg shadow-md p-4 w-60 flex-shrink-0 transition-all hover:cursor-pointer">
+          <h3 className="text-lg font-bold text-white mb-2">{product.name}</h3>
+          <ul className="text-sm text-gray-300">
+            {product.attributes &&
+              Object.entries(product.attributes).map(([key, value]) => (
+                <li key={key} className="mb-1">
+                  <span className="font-medium text-gray-400">{key}: </span>
+                  <span>{value}</span>
+                </li>
+              ))}
+          </ul>
+        </div>
+      </Link>
     );
   };
 
