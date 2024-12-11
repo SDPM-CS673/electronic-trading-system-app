@@ -12,12 +12,13 @@ const Header = ({ toggleSidebar }) => {
         <div className="flex justify-between items-center py-4">
 
           <div className='flex flex-row gap-2'>
-            <button
-              className="text-white mr-4"
-              onClick={toggleSidebar}
-            >
-              <FaBars size={30} />
-            </button>
+            {isUserLoggedIn &&
+              <button
+                className="text-white mr-4"
+                onClick={toggleSidebar}
+              >
+                <FaBars size={30} />
+              </button>}
 
 
             <div className="text-2xl font-bold text-white">
@@ -27,12 +28,18 @@ const Header = ({ toggleSidebar }) => {
           </div>
           {/* Header Buttons (visible on larger screens) */}
           <div className="space-x-4 lg:flex">
-            <Button variant="outlined" className='bg-white' >
-              Login
-            </Button>
-            <Button variant="outlined" className='bg-white'>
+            {!isUserLoggedIn &&
+              <Button variant="outlined" onClick={() => login(true)} className='bg-white' >
+                Login
+              </Button>}
+            {!isUserLoggedIn && <Button variant="outlined" className='bg-white'>
               Sign Up
+            </Button>}
+            { 
+              isUserLoggedIn && <Button variant="outlined" onClick={()=> logout()} className='bg-red'>
+              Logout
             </Button>
+            }
           </div>
         </div>
       </div>
