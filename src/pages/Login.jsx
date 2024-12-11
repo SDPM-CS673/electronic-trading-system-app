@@ -23,6 +23,7 @@ const Login = () => {
     post("/auth/login", formData, "team3").then((result) => {
       // Save the token in localStorage
       localStorage.setItem("jwtToken", JSON.stringify(result.token));
+      console.log(localStorage.getItem("jwtToken"));
       delete result.token;
       login(result);
       showMessage("Login successful!", "success");

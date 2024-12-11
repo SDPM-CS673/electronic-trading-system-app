@@ -2,6 +2,7 @@ export const routeGroups = [
   { path: "/", component: "Home" },
   { path: "/home", component: "Home" },
   { path: "/login", component: "Login" },
+  { path: "/my_account", component: "Dashboard" },
   { path: "/register", component: "Register" },
   { path: "/category", component: "Category" },
   { path: "/product", component: "Product" },
