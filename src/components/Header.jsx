@@ -1,75 +1,63 @@
-import { useState } from 'react';
-import Login from './Login'; // Assuming Login component is in a separate file
-import Register from './Register'; // Assuming Register component is in a separate file
+import { FaBars } from 'react-icons/fa';  // Import FaBars for the hamburger icon
+import { useAuth } from '../context/AuthContext';  // Import useAuth hook
+import { Button } from "@material-tailwind/react";
+import { useNavigate } from 'react-router-dom';
+import { showMessage } from "../services/message.service"
 
-const Header = () => {
-  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+const Header = ({ toggleSidebar }) => {
+  const naviagte = useNavigate();
+  const { login, logout, user, isLoggedIn } = useAuth();
 
-  const toggleLoginModal = () => {
-    setLoginModalOpen(!isLoginModalOpen);
-    setRegisterModalOpen(false); // Close Register modal if Login modal opens
-  };
+  const goToLogIn = () => {
+    naviagte('/login');
+  }
 
-  const toggleRegisterModal = () => {
-    setRegisterModalOpen(!isRegisterModalOpen);
-    setLoginModalOpen(false); // Close Login modal if Register modal opens
-  };
+  const doLogOut = () => {
+    localStorage.removeItem('jwtToken');
+    logout();
+    showMessage('Logged out successfully', 'success');
+  }
 
+  const goToSignUp = () => {
+    naviagte('/signup');
+  }
   return (
-    <header className="bg-black shadow-md fixed w-full top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="bg-black shadow-md w-full top-0 fixed "> {/* Fixed header with z-index */}
+      <div className="max-w-7xl mx-auto px-3">
         <div className="flex justify-between items-center py-4">
-          <div className="text-2xl font-bold text-gray-300">
-            <a href="/">uniTrade</a>
-          </div>
 
-          <div className="space-x-4">
-            <button variant="outlined"
-              className="text-white bg-primary px-4 py-2 rounded-md hover:bg-secondary"
-              onClick={toggleLoginModal}
-            >
-              Login
-            </button>
-            <button variant="outlined"
-              className="text-primary border border-primary px-4 py-2 rounded-md hover:bg-primary hover:text-white"
-              onClick={toggleRegisterModal}
-            >
+          <div className='flex flex-row gap-2'>
+            {isLoggedIn &&
+              <button
+                className="text-white mr-4"
+                onClick={toggleSidebar}
+              >
+                <FaBars size={30} />
+              </button>}
+
+
+            <div className="text-2xl font-bold text-white">
+              <a href="/">uniTrade</a>
+            </div>
+
+          </div>
+          {/* Header Buttons (visible on larger screens) */}
+          <div className="space-x-4 lg:flex">
+            {!isLoggedIn &&
+              <Button variant="outlined" onClick={goToLogIn} className='bg-white' >
+                Login
+              </Button>}
+            {!isLoggedIn && <Button variant="outlined" className='bg-white'>
               Sign Up
-            </button>
+            </Button>}
+            {
+              isLoggedIn && <Button variant="outlined" onClick={doLogOut} className='bg-red-600 text-white'>
+                Logout
+              </Button>
+            }
           </div>
         </div>
       </div>
-
-      {/* Login Modal */}
-      {isLoginModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full sm:w-96 relative">
-            <button
-              className="absolute top-2 right-2 text-xl font-bold"
-              onClick={toggleLoginModal}
-            >
-              X
-            </button>
-            <Login toggleRegisterModal={toggleRegisterModal} />
-          </div>
-        </div>
-      )}
-
-      {/* Register Modal */}
-      {isRegisterModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full sm:w-96 relative">
-            <button
-              className="absolute top-2 right-2 text-xl font-bold"
-              onClick={toggleRegisterModal}
-            >
-              X
-            </button>
-            <Register toggleLoginModal={toggleLoginModal} />
-          </div>
-        </div>
-      )}
     </header>
   );
 };

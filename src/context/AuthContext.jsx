@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [sessionLoad, setSessionLoad] = useState(false);
 
     useEffect(() => {
-        get("/auth/session", "http://localhost:7001").then((result) => {
+        get("/auth/session", "team3").then((result) => {
             if (result && Object.keys(result).length > 0) {
                 setUserDetails(result);
                 setIsLoggedIn(true);
