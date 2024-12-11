@@ -1,8 +1,5 @@
-import { Card, CardBody, Typography, CardFooter, Button, Input } from "@material-tailwind/react";
-import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
 
-import Header from "../components/Header";
+import Header from "../Components/Header";
 const Home = () => {
   const heading = "E-Trading System";
 
