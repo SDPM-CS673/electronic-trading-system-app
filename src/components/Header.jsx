@@ -1,8 +1,8 @@
-import { FaBars } from 'react-icons/fa';  // Import FaBars for the hamburger icon
-import { useAuth } from '../context/AuthContext';  // Import useAuth hook
 import { Button } from "@material-tailwind/react";
+import { FaBars } from 'react-icons/fa'; // Import FaBars for the hamburger icon
 import { useNavigate } from 'react-router-dom';
-import { showMessage } from "../services/message.service"
+import { useAuth } from '../context/AuthContext'; // Import useAuth hook
+import { showMessage } from "../services/message.service";
 
 const Header = ({ toggleSidebar }) => {
   const naviagte = useNavigate();

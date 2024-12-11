@@ -1,11 +1,23 @@
 import React from "react";
-import { FaBars, FaTimes, FaHome, FaCogs, FaInfoCircle, FaEnvelope } from "react-icons/fa";
+import {
+  FaBars,
+  FaTimes,
+  FaHome,
+  FaTags,
+  FaShoppingCart,
+  FaChartBar,
+  FaWallet,
+  FaExchangeAlt,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const { isAdmin } = useAuth();
+
   return (
     <div
-      className={`fixed top-0 left-0 h-full bg-black  transition-width duration-300 ease-in-out ${isOpen ? "w-42" : "w-16"} overflow-hidden`}
+      className={`fixed top-0 left-0 h-full bg-black transition-width duration-300 ease-in-out ${isOpen ? "w-42" : "w-16"} overflow-hidden`}
     >
       <div className="flex flex-col items-start">
         {/* Button to toggle sidebar */}
@@ -20,23 +32,97 @@ const Sidebar = ({ isOpen, onClose }) => {
         <nav className="mt-4 w-full">
           <ul>
             <li>
-              <Link to="/" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
-                {isOpen ? <span className="flex flex-row"> <FaHome size={20} /><span className="pl-4">Home</span> </span> : <FaHome size={20} />}
+              <Link
+                to="/product/list"
+                className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700"
+              >
+                {isOpen ? (
+                  <span className="flex flex-row">
+                    <FaHome size={20} />
+                    <span className="pl-4">Home</span>
+                  </span>
+                ) : (
+                  <FaHome size={20} />
+                )}
+              </Link>
+            </li>
+            {isAdmin && (
+              <li>
+                <Link
+                  to="/category"
+                  className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700"
+                >
+                  {isOpen ? (
+                    <span className="flex flex-row">
+                      <FaTags size={20} />
+                      <span className="pl-4">Category</span>
+                    </span>
+                  ) : (
+                    <FaTags size={20} />
+                  )}
+                </Link>
+              </li>
+            )}
+            {isAdmin && (
+              <li>
+                <Link
+                  to="/product"
+                  className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700"
+                >
+                  {isOpen ? (
+                    <span className="flex flex-row">
+                      <FaShoppingCart size={20} />
+                      <span className="pl-4">Product</span>
+                    </span>
+                  ) : (
+                    <FaShoppingCart size={20} />
+                  )}
+                </Link>
+              </li>
+            )}
+            <li>
+              <Link
+                to="/marketdata"
+                className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700"
+              >
+                {isOpen ? (
+                  <span className="flex flex-row">
+                    <FaChartBar size={20} />
+                    <span className="pl-4">Market Data</span>
+                  </span>
+                ) : (
+                  <FaChartBar size={20} />
+                )}
               </Link>
             </li>
             <li>
-              <Link to="/category" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
-                {isOpen ? <span className="flex flex-row"> <FaCogs size={20} /><span className="pl-4">Product</span> </span> : <FaCogs size={20} />}
+              <Link
+                to="/wallet"
+                className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700"
+              >
+                {isOpen ? (
+                  <span className="flex flex-row">
+                    <FaWallet size={20} />
+                    <span className="pl-4">Wallet</span>
+                  </span>
+                ) : (
+                  <FaWallet size={20} />
+                )}
               </Link>
             </li>
             <li>
-              <Link to="/product" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
-                {isOpen ? <span className="flex flex-row"> <FaInfoCircle size={20} /> <span className="pl-4">Category</span> </span> : <FaInfoCircle size={20} />}
-              </Link>
-            </li>
-            <li>
-              <Link to="/marketdata" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
-                {isOpen ? <span className="flex flex-row"> <FaEnvelope size={20} /><span className="pl-4">Market Data</span> </span> : <FaEnvelope size={20} />}
+              <Link
+                to="/trades/settle"
+                className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700"
+              >
+                {isOpen ? (
+                  <span className="flex flex-row">
+                    <FaExchangeAlt size={20} />
+                    <span className="pl-4">Settle Trade</span>
+                  </span>
+                ) : (
+                  <FaExchangeAlt size={20} />
+                )}
               </Link>
             </li>
           </ul>

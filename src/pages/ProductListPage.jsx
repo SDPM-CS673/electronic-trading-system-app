@@ -1,19 +1,26 @@
 import React, { useEffect, useState, useRef } from "react";
 import { get, post } from "../services/api-call.service";
+import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 const ProductListPage = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userName, setUserName] = useState('User');
+
+  const { userDetails } = useAuth();
 
   useEffect(() => {
     fetchCategories()
+    if (userDetails) {
+      setUserName(userDetails.name);
+    }
   }, []);
 
 
   const fetchCategories = () => {
-    get("/api/productCategoryWise", "http://localhost:3000")
+    get("/api/productCategoryWise", "team1")
       .then((response) => {
         const categoryData = response.categories;
         setCategories(categoryData);
@@ -83,7 +90,7 @@ const ProductListPage = () => {
           </button>
           <div
             ref={scrollContainerRef}
-            className="overflow-x-auto flex space-x-6 py-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-800 transition-all"
+            className="overflow-x-auto pl-[50px] pr-[50px] flex space-x-6 py-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-800 transition-all"
             style={{ scrollBehavior: "smooth" }}
           >
             {products.map((product) => (
@@ -105,7 +112,10 @@ const ProductListPage = () => {
 
   return (
     <div className="bg-gray-200 text-white min-h-screen w-full p-6">
-      <h1 className="text-4xl font-bold text-black mb-8">Product Categories</h1>
+      <h1 className="text-4xl font-bold text-black mb-8">
+        <div>Hi, {userName}.</div>
+        <div className="my-4">Welcome to UniTrade</div>
+      </h1>
       <div className="max-w-screen-xl mx-auto">
         {categories.filter(e => e.products.length > 0).map((category) => (
           <CategorySection

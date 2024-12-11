@@ -6,7 +6,7 @@ export const isLoggedIn = () => {
 
 export const getUserDetail = () => {
     return {
-        user_id: "123",
+        user_id: "2071e503-1f42-4842-a5dd-e48110e7d8be",
         name: "Hannan Desai"
     }
 }

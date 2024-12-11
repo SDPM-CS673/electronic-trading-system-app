@@ -4,6 +4,7 @@ import { post, get } from "../services/api-call.service";
 import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
 import { showMessage } from '../services/message.service';
 
+
 const Product = () => {
 
     const [products, setProducts] = useState([]);
@@ -15,7 +16,7 @@ const Product = () => {
     useEffect(() => { getData() }, [])
 
     const getData = () => {
-        get("/api/productWithCategory", "http://localhost:3000")
+        get("/api/productWithCategory", "team1")
             .then((response) => {
                 console.log(response);
                 if (response.products) {
