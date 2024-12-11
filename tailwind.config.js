@@ -4,10 +4,10 @@ const withMT = require("@material-tailwind/react/utils/withMT");
 module.exports = withMT({
   darkMode: ["class"],  // Enables dark mode based on a class toggle
   content: [
-    "./index.html", 
-    "./src/**/*.{vue,js,ts,jsx,tsx}", 
-    "./pages/**/*.{ts,tsx}", 
-    "./components/**/*.{ts,tsx}", 
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",  // Add all paths where Tailwind classes are used
   ],
   theme: {
@@ -69,6 +69,14 @@ module.exports = withMT({
         sm: "0.25rem",  // Small border radius
       },
       keyframes: {
+        scrollCategories: {
+          '0%': {
+            transform: 'translateX(0)',
+          },
+          '100%': {
+            transform: 'translateX(100%)', // Move the content right
+          },
+        },
         "accordion-down": {
           from: { height: 0 },
           to: { height: "var(--radix-accordion-content-height)" },  // Animation for accordion opening
@@ -78,9 +86,19 @@ module.exports = withMT({
           to: { height: 0 },  // Animation for accordion closing
         },
       },
+      fadeIn: {
+        '0%': {
+          opacity: 0, // Start with the item being invisible
+        },
+        '100%': {
+          opacity: 1, // Fade it to full opacity
+        },
+      },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",  // Animation duration and easing for accordion
+        'scroll': 'scrollCategories 10s linear infinite',
+        'fade-in': 'fadeIn 1.5s ease-in-out'
       },
     },
   },

@@ -53,11 +53,11 @@ function App() {
         {isLoggedIn && < Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />}
 
         {/* Main Content Area */}
-        <div className={`flex-1 flex-col h-screen w-full transition-all duration-300 ease-in-out`}>
+        <div className={`flex-1 flex-col justify-between h-screen w-full transition-all duration-300 ease-in-out`}>
           <div className={'h-[10%] '}>
             <Header toggleSidebar={toggleSidebar} />
           </div>
-          <div style={isLoggedIn ? { paddingLeft: sidebarOpen ? '12%' : '6%' } : { paddingTop: '1rem', paddingBottom: '1rem' }} className="h-[85%] overflow-auto">
+          <div style={isLoggedIn ? { paddingLeft: sidebarOpen ? '12%' : '6%' } : { paddingTop: '1rem' }} className="h-[85%] overflow-auto">
             <Routes>{renderRoutes(routeGroups)}</Routes>  {/* Dynamically render routes */}
           </div>
           <div className={'h-[5%]'}>
