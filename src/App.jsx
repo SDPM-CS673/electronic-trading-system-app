@@ -7,8 +7,11 @@ import Header from "./components/landing-page/Header/page";
 import Footer from "./components/landing-page/Footer/page";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from "./context/AuthContext";  // Import useAuth hook
 
 function App() {
+
+  const { login, logout, user, isLoggedIn } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false); // Sidebar is initially close
 
   const toggleSidebar = () => {
@@ -47,14 +50,14 @@ function App() {
       <ToastContainer />
       <div className="flex flex-1 min-h-screen">
         {/* Sidebar */}
-        <Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />
+        {isLoggedIn && < Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />}
 
         {/* Main Content Area */}
         <div className={`flex-1 ml-${sidebarOpen ? '64' : '20'} flex-col h-screen w-full`}>
           <div className={'h-[10%] '}>
             <Header toggleSidebar={toggleSidebar} />
           </div>
-          <div style={{ paddingLeft: sidebarOpen ? '12%' : '6%' }} className="h-[95%] px-4 overflow-auto">
+          <div style={isLoggedIn ? { paddingLeft: sidebarOpen ? '12%' : '6%' } : { paddingTop: '1rem', paddingBottom: '1rem' }} className="h-[95%] overflow-auto">
             <Routes>{renderRoutes(routeGroups)}</Routes>  {/* Dynamically render routes */}
           </div>
           <div className={'h-[5%]'}>

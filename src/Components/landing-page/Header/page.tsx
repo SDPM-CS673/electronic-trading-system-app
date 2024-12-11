@@ -4,7 +4,7 @@ import { Button } from "@material-tailwind/react";
 
 const Header = ({ toggleSidebar }) => {
 
-  const { login, logout, user, isUserLoggedIn } = useAuth();
+  const { login, logout, user, isLoggedIn } = useAuth();
 
   return (
     <header className="bg-black shadow-md w-full top-0 fixed "> {/* Fixed header with z-index */}
@@ -12,7 +12,7 @@ const Header = ({ toggleSidebar }) => {
         <div className="flex justify-between items-center py-4">
 
           <div className='flex flex-row gap-2'>
-            {isUserLoggedIn &&
+            {isLoggedIn &&
               <button
                 className="text-white mr-4"
                 onClick={toggleSidebar}
@@ -28,17 +28,17 @@ const Header = ({ toggleSidebar }) => {
           </div>
           {/* Header Buttons (visible on larger screens) */}
           <div className="space-x-4 lg:flex">
-            {!isUserLoggedIn &&
+            {!isLoggedIn &&
               <Button variant="outlined" onClick={() => login(true)} className='bg-white' >
                 Login
               </Button>}
-            {!isUserLoggedIn && <Button variant="outlined" className='bg-white'>
+            {!isLoggedIn && <Button variant="outlined" className='bg-white'>
               Sign Up
             </Button>}
-            { 
-              isUserLoggedIn && <Button variant="outlined" onClick={()=> logout()} className='bg-red'>
-              Logout
-            </Button>
+            {
+              isLoggedIn && <Button variant="outlined" onClick={() => logout()} className='bg-red-600 text-white'>
+                Logout
+              </Button>
             }
           </div>
         </div>
