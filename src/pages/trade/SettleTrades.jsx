@@ -46,7 +46,7 @@ const WalletTrade = () => {
         setError("");
 
         try {
-            const response = await axios.post(`http://localhost:3000/trades/settle/${userId}`);
+            const response = await axios.post(`https://cs673backend.onrender.com/trades/settle/${userId}`);
             if (response.data.settled_trades.length === 0) {
                 setError("No trades found.");
             }
