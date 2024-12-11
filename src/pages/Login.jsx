@@ -1,6 +1,6 @@
 import { Button, Input } from "@material-tailwind/react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import useAuth hook
 import { post } from "../services/api-call.service"; // Ensure the import path is correct
 import { showMessage } from "../services/message.service";
@@ -50,9 +50,9 @@ const Login = () => {
 
       <p className="mt-4 text-center">
         Don’t have an account?{" "}
-        <a href="/register" className="text-blue-500 hover:underline">
+        <Link to="/register" className="text-blue-500 hover:underline">
           Register here
-        </a>
+        </Link>
         .
       </p>
     </div>

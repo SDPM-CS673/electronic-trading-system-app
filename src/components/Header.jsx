@@ -1,6 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import { FaBars } from 'react-icons/fa'; // Import FaBars for the hamburger icon
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; // Import useAuth hook
 import { showMessage } from "../services/message.service";
 
@@ -38,7 +38,7 @@ const Header = ({ toggleSidebar }) => {
 
 
             <div className="text-2xl font-bold text-white">
-              <a href="/">uniTrade</a>
+              <Link to="/">uniTrade</Link>
             </div>
 
           </div>

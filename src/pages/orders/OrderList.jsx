@@ -205,7 +205,6 @@ const OrderList = () => {
                                         <td className={classes}>
                                             <Typography
                                                 as="a"
-                                                href="#"
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-medium"
