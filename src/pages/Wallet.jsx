@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getUserDetail } from "../services/user.service";
 
+const BASE_URL = "https://cs673backend.onrender.com";
+
 const Wallet = () => {
     const [userId, setUserId] = useState("");
     const [wallet, setWallet] = useState(null);
@@ -25,7 +27,7 @@ const Wallet = () => {
             return;
         }
         try {
-            const response = await axios.get(`http://localhost:3000/wallet/${userId}`);
+            const response = await axios.get(`${BASE_URL}/wallet/${userId}`);
             setWallet(response.data.wallet);
             setError("");
         } catch (error) {
@@ -39,7 +41,7 @@ const Wallet = () => {
         try {
             setIsLoading(true);
             const response = await axios.get(
-                `http://localhost:3000/wallet/logs/${userId}?filter=${filterType}`
+                `${BASE_URL}/wallet/logs/${userId}?filter=${filterType}`
             );
             const sortedTransactions = response.data.sort((a, b) => 
                 new Date(b.date) - new Date(a.date)
@@ -81,7 +83,7 @@ const Wallet = () => {
         setSuccess("");
 
         try {
-            const response = await axios.post("http://localhost:3000/wallet/update", {
+            const response = await axios.post(`${BASE_URL}/wallet/update`, {
                 user_id: userId,
                 type,
                 amount: numAmount

@@ -2,6 +2,7 @@ export const routeGroups = [
   { path: "/", component: "Home" },
   { path: "/home", component: "Home" },
   { path: "/login", component: "Login" },
+  { path: "/my_account", component: "Dashboard" },
   { path: "/register", component: "Register" },
   { path: "/category", component: "Category" },
   { path: "/product", component: "Product" },
@@ -10,5 +11,6 @@ export const routeGroups = [
   { path: '/orders/list', component: 'OrderList' },
   { path: '/trades/list', component: 'TradeList' },
   { path: '/trades/settle', component: 'SettleTrades'},
-  { path: '/wallet', component: 'Wallet' }
+  { path: '/wallet', component: 'Wallet' },
+  { path: '/report', component: 'UserReports'}
 ];
