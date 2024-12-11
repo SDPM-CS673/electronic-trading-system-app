@@ -10,6 +10,7 @@ import Sidebar from "./Sidebar";
 import OrderList from "./orders/OrderList";
 import TradeList from "./trade/TradeList";
 import Wallet from "./Wallet";
+//import SettleReport from "./SettleReport"
 
 export {
   Home,
@@ -24,4 +25,5 @@ export {
   OrderList,
   TradeList,
   Wallet
+  //SettleReport
 };
