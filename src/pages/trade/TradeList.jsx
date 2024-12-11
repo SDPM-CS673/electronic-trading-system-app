@@ -10,7 +10,7 @@ const TradeList = () => {
     }, []);
 
     const getTradeList = () => {
-        post("/trades/list", {}, "http://localhost:7001").then((result) => {
+        post("/trades/list", {}, "team3").then((result) => {
             setTradeList(result);
         }).catch((error) => {
             console.error(error);

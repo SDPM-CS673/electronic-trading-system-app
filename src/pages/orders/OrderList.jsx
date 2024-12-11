@@ -13,7 +13,7 @@ const OrderList = () => {
     }, []);
 
     const getOrderList = () => {
-        post("/orders/list", {}, "http://localhost:7001").then((response) => {
+        post("/orders/list", {}, "team3").then((response) => {
             setOrderList(response);
         }).catch((error) => {
             console.error(error);

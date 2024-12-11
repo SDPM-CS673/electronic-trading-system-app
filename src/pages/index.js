@@ -12,6 +12,7 @@ import AddNewProductModal from "./AddNewProductModal";
 import MarketData from "./MarketData";
 import OrderList from "./orders/OrderList";
 import TradeList from "./trade/TradeList";
+import SettleTrades from "./trade/SettleTrades"
 import Wallet from "./Wallet";
 
 export {
@@ -29,5 +30,6 @@ export {
   MarketData,
   OrderList,
   TradeList,
-  Wallet
+  Wallet,
+  SettleTrades
 };
