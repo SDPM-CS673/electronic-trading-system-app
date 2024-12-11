@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { get } from "../services/api-call.service";
-import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
+import { Button, Card, Dialog, Input, Typography } from "@material-tailwind/react";
+import { showMessage } from "../services/message.service";
 
 const MarketData = () => {
     const [activeTab, setActiveTab] = useState("Live"); // Tracks active tab
@@ -9,54 +10,79 @@ const MarketData = () => {
     const [endDate, setEndDate] = useState("");
     const [marketData, setMarketData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(""); // For category filter
-    const [categories, setCategories] = useState([]); // Store unique categories
 
     useEffect(() => {
         fetchMarketData();
+
+        if (activeTab === "Historic") {
+            // Pre-fill date filters for historic data
+            const today = new Date();
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setMonth(today.getMonth() - 1);
+
+            setStartDate(oneMonthAgo.toISOString().split("T")[0]);
+            setEndDate(today.toISOString().split("T")[0]);
+        }
+
     }, [activeTab]);
 
     const fetchMarketData = () => {
         const endpoint = activeTab === "Live" ? "/api/liveData" : "/api/historicData";
-        get(endpoint, "http://localhost:3000")
+        const params = activeTab === "Historic" && startDate && endDate
+            ? `?start_date=${startDate}&end_date=${endDate}`
+            : "";
+
+        get(endpoint + params, "team1")
             .then((response) => {
                 setMarketData(response);
                 setFilteredData(response);
-
-                // Extract unique categories
-                const uniqueCategories = [...new Set(response.map(item => item.category_name))];
-                setCategories(uniqueCategories);
             })
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.error(error);
+                showMessage("Failed to fetch market data", "error");
+            });
     };
 
     const filterTableData = () => {
         const lowerSearch = searchText.toLowerCase();
-        const filtered = marketData.filter((data) => {
-            const productIdMatches = data.product_name.toLowerCase().includes(lowerSearch);
-            const categoryMatches = selectedCategory ? data.category_name === selectedCategory : true;
-            const dateMatches = startDate && endDate
-                ? new Date(data.last_update_time) >= new Date(startDate) && new Date(data.last_update_time) <= new Date(endDate)
-                : true;
+        if (lowerSearch != '') {
+            const filtered = marketData.filter((data) => {
+                // Check if the product name includes the search text
+                const productIdMatches = data.product_name.toLowerCase().includes(lowerSearch);
 
-            if (activeTab === "Live") {
-                return productIdMatches && categoryMatches;
-            } else {
-                return productIdMatches && categoryMatches && dateMatches;
-            }
-        });
-        setFilteredData(filtered);
+                // Check if the date range is valid for Historic data
+                const dateMatches = startDate && endDate
+                    ? new Date(data.trade_date) >= new Date(startDate) &&
+                    new Date(data.trade_date) <= new Date(endDate)
+                    : true;
+
+                // Combine all conditions
+                if (activeTab === "Live") {
+                    return productIdMatches;
+                } else {
+                    return productIdMatches && dateMatches;
+                }
+            });
+
+            setFilteredData(filtered);
+        } else {
+            setFilteredData(marketData);
+        }
     };
 
     useEffect(() => {
         filterTableData();
-    }, [searchText, selectedCategory]);
+    }, [searchText, startDate, endDate]);
 
     const resetDates = () => {
-        setStartDate("");
-        setEndDate("");
         setSearchText("");
-        setSelectedCategory(""); // Reset category filter
+
+        const today = new Date();
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(today.getMonth() - 1);
+
+        setStartDate(oneMonthAgo.toISOString().split("T")[0]);
+        setEndDate(today.toISOString().split("T")[0]);
     };
 
     const dateChange = (e, type) => {
@@ -64,9 +90,6 @@ const MarketData = () => {
             setStartDate(e.target.value);
         } else {
             setEndDate(e.target.value);
-        }
-        if (!startDate && !endDate) {
-            filterTableData();
         }
     };
 
@@ -101,18 +124,6 @@ const MarketData = () => {
                             onChange={(e) => setSearchText(e.target.value)}
                         />
                     </div>
-                    {/* Category Filter */}
-                    <div>
-                        <Select
-                            label="Select Category"
-                            value={selectedCategory}
-                        >
-                            <Option onSelect={() => setSelectedCategory("")} value="">All Categories</Option>
-                            {categories.map((category, index) => (
-                                <Option onSelect={() => setSelectedCategory(value)} key={category} value={category}>{category}</Option>
-                            ))}
-                        </Select>
-                    </div>
                 </div>
                 {activeTab === "Historic" && (
                     <div className="flex flex-row justify-between gap-4">
@@ -120,7 +131,7 @@ const MarketData = () => {
                             <Input
                                 type="date"
                                 value={startDate}
-                                max={new Date().toISOString().split("T")[0]}
+                                max={endDate || new Date().toISOString().split("T")[0]} // Ensure start date is before end date
                                 onChange={(e) => dateChange(e, "start")}
                                 label="Enter Start Date"
                             />
@@ -129,7 +140,8 @@ const MarketData = () => {
                             <Input
                                 type="date"
                                 value={endDate}
-                                min={new Date(new Date().setMonth(new Date().getMonth() - 3)).toISOString().split("T")[0]}
+                                min={startDate || new Date(new Date().setMonth(new Date().getMonth() - 3)).toISOString().split("T")[0]} // Ensure end date is after start date
+                                max={new Date().toISOString().split("T")[0]} // No future dates
                                 onChange={(e) => dateChange(e, "end")}
                                 label="Enter End Date"
                             />
@@ -139,7 +151,6 @@ const MarketData = () => {
                         </div>
                     </div>
                 )}
-
 
             </div>
 

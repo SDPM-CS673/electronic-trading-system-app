@@ -3,6 +3,7 @@ import { post, get } from "../services/api-call.service";
 import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
 import { showMessage } from '../services/message.service';
 
+
 const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, categories }) => {
     const [productId, setProductId] = useState('');
     const [productName, setProductName] = useState('');
@@ -45,7 +46,7 @@ const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, cate
 
 
     const getData = () => {
-        get("/api/allCategories", "http://localhost:3000")
+        get("/api/allCategories", "team1")
             .then((response) => {
                 console.log(response);
                 setCategories(response.categories);
@@ -79,7 +80,7 @@ const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, cate
                 status: statusPayload,
             };
             console.log('Edit Product', product);
-            post('/api/product/' + productId, product, 'http://localhost:3000')
+            post('/api/product/' + productId, product, "team1")
                 .then((response) => {
                     console.log(response);
                     saveProduct(product);
@@ -103,7 +104,7 @@ const AddNewProductModal = ({ closeModal, productData, isEdit, saveProduct, cate
                 status: statusPayload,
             };
             console.log('Save Product', product);
-            post('/api/products', product, 'http://localhost:3000')
+            post('/api/products', product, "team1")
                 .then((response) => {
                     console.log(response);
                     saveProduct(product);

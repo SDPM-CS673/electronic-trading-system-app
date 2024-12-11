@@ -4,6 +4,7 @@ import { post, get } from "../services/api-call.service";
 import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
 import { showMessage } from '../services/message.service';
 
+
 const Category = () => {
 
 
@@ -16,7 +17,7 @@ const Category = () => {
   useEffect(() => { getData() }, [])
 
   const getData = () => {
-    get("/api/allCategories", "http://localhost:3000")
+    get("/api/allCategories", "team1")
       .then((response) => {
         console.log(response);
         if (response.categories) {

@@ -20,7 +20,7 @@ const ProductListPage = () => {
 
 
   const fetchCategories = () => {
-    get("/api/productCategoryWise", "http://localhost:3000")
+    get("/api/productCategoryWise", "team1")
       .then((response) => {
         const categoryData = response.categories;
         setCategories(categoryData);
