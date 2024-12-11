@@ -27,7 +27,7 @@ const Login = () => {
       delete result.token;
       login(result);
       showMessage("Login successful!", "success");
-      navigate("/home");
+      navigate("/product/list");
     }).catch((error) => {
       console.error(error);
       showMessage("Login failed! Please check your credentials.", "error");

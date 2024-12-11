@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
                 setUserDetails(result);
                 setIsAdmin(result.admin_status)
                 setIsLoggedIn(true);
-                navigate("/product/list")
             }
             setSessionLoad(true);
         }).catch((error) => {
@@ -31,7 +30,6 @@ export const AuthProvider = ({ children }) => {
     const login = (userData) => {
         setUserDetails(userData);
         setIsLoggedIn(true);
-        navigate("/product/list") // route to product list page after login
     };
 
     const logout = () => {
