@@ -3,8 +3,8 @@ import { Routes, Route } from "react-router-dom";  // Ensure correct imports
 import * as Pages from "./pages";  // Import everything from pages/index.js
 import { routeGroups } from "./routes"; // Import your routeGroups
 import Sidebar from "./pages/Sidebar";  // Import Sidebar correctly
-import Header from "./components/landing-page/Header/page";
-import Footer from "./components/landing-page/Footer/page";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "./context/AuthContext";  // Import useAuth hook
