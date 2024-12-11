@@ -116,7 +116,7 @@ const ProductListPage = () => {
         <div>Hi, {userName}.</div>
         <div className="my-4">Welcome to UniTrade</div>
       </h1>
-      <div className="max-w-screen-xl mx-auto">
+      <div className="mx-auto">
         {categories.filter(e => e.products.length > 0).map((category) => (
           <CategorySection
             key={category.id}
