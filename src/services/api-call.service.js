@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiOrigin = process.env.TEAM3_API_URL;
+const apiOrigin = process.env.VITE_TEAM3_API_URL;
 const apiOrigins = {
     "team1": "https://trade-match-maintain-api.onrender.com",
     "team2": "https://trade-match-maintain-api.onrender.com",

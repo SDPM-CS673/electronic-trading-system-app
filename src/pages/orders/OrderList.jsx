@@ -13,7 +13,7 @@ const OrderList = () => {
     }, []);
 
     const getOrderList = () => {
-        post("/orders/list", {}, process.env.TEAM3_API_URL).then((response) => {
+        post("/orders/list", {}, process.env.VITE_TEAM3_API_URL).then((response) => {
             setOrderList(response);
         }).catch((error) => {
             console.error(error);

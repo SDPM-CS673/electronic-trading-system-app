@@ -10,7 +10,7 @@ const TradeList = () => {
     }, []);
 
     const getTradeList = () => {
-        post("/trades/list", {}, process.env.TEAM3_API_URL).then((result) => {
+        post("/trades/list", {}, process.env.VITE_TEAM3_API_URL).then((result) => {
             setTradeList(result);
         }).catch((error) => {
             console.error(error);
