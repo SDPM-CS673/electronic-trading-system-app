@@ -1,8 +1,8 @@
-import { FaBars } from 'react-icons/fa';  // Import FaBars for the hamburger icon
-import { useAuth } from '../context/AuthContext';  // Import useAuth hook
 import { Button } from "@material-tailwind/react";
+import { FaBars } from 'react-icons/fa'; // Import FaBars for the hamburger icon
 import { useNavigate } from 'react-router-dom';
-import { showMessage } from "../services/message.service"
+import { useAuth } from '../context/AuthContext'; // Import useAuth hook
+import { showMessage } from "../services/message.service";
 
 const Header = ({ toggleSidebar }) => {
   const naviagte = useNavigate();
@@ -19,7 +19,7 @@ const Header = ({ toggleSidebar }) => {
   }
 
   const goToSignUp = () => {
-    naviagte('/signup');
+    naviagte('/register');
   }
   return (
     <header className="bg-black shadow-md w-full top-0 fixed "> {/* Fixed header with z-index */}
@@ -47,7 +47,7 @@ const Header = ({ toggleSidebar }) => {
               <Button variant="outlined" onClick={goToLogIn} className='bg-white' >
                 Login
               </Button>}
-            {!isLoggedIn && <Button variant="outlined" className='bg-white'>
+            {!isLoggedIn && <Button variant="outlined"  onClick={goToSignUp} className='bg-white'>
               Sign Up
             </Button>}
             {
