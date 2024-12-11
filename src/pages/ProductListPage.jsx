@@ -123,7 +123,7 @@ const ProductListPage = () => {
 
         </div>
       </h1>
-      <div className="max-w-screen-xl mx-auto">
+      <div className="mx-auto">
         {categories.filter(e => e.products.length > 0).map((category) => (
           <CategorySection
             key={category.id}

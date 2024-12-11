@@ -19,17 +19,13 @@ const UserReports = () => {
 
     useEffect(() => {
         const userDetail = getUserDetail();
-        console.log("User detail:", userDetail); // Debug log
         if (userDetail && userDetail.user_id) {
-            setUserId(userDetail.user_id); // Set user_id from the helper function
-        } else {
-            console.error("User ID not found in user details.");
+            setUserId(userDetail.user_id);
         }
     }, []);
 
     useEffect(() => {
         if (userId) {
-            console.log("Fetching trade reports for userId:", userId); // Debug log
             fetchTradeList();
         }
     }, [userId]);
@@ -44,17 +40,13 @@ const UserReports = () => {
         setError("");
 
         try {
-            const url = `https://cs673backend.onrender.com/report/${userId}`;
-            console.log("API URL:", url); // Debug log
-            const response = await axios.post(url);
-            console.log("API Response:", response.data); // Debug log
-
+            const response = await axios.post(`https://cs673backend.onrender.com/report/${userId}`);
             if (!response.data.trades || response.data.trades.length === 0) {
                 setError("No trades found.");
             }
             setTradeList(response.data.trades || []);
         } catch (error) {
-            console.error("Error fetching trade reports:", error); // Debug log
+            console.error("Error fetching trade reports:", error);
             setError("Failed to fetch trade data. Please try again.");
             setTradeList([]);
         } finally {
@@ -62,8 +54,31 @@ const UserReports = () => {
         }
     };
 
+    const downloadData = () => {
+        const headers = TABLE_HEAD.join(",");
+        const rows = tradeList.map((trade) =>
+            [
+                trade.order_id,
+                trade.trade_date_time,
+                trade.trade_qty,
+                trade.side,
+                trade.product_name,
+                trade.trade_margin
+            ].join(",")
+        );
+        const csvContent = [headers, ...rows].join("\n");
+
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "trade_reports.csv";
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
     return (
-        <div className="h-full w-full">
+        <div className="h-full w-full p-6">
             <h1 className="text-xl font-bold mb-4">User Trade Reports</h1>
 
             {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
@@ -101,6 +116,16 @@ const UserReports = () => {
                 </div>
 
                 {isLoading && <p className="text-gray-500 text-center mt-4">Loading...</p>}
+
+                <div className="flex justify-end mt-4">
+                    <button
+                        onClick={downloadData}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                        disabled={tradeList.length === 0}
+                    >
+                        Download Data
+                    </button>
+                </div>
             </div>
         </div>
     );
