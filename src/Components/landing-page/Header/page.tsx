@@ -16,7 +16,7 @@ const Header = ({ toggleSidebar }) => {
               <button
                 className="text-white mr-4"
                 onClick={toggleSidebar}
-              > 
+              >
                 <FaBars size={30} />
               </button>}
 

@@ -4,7 +4,7 @@ import { FaBars, FaTimes, FaHome, FaCogs, FaInfoCircle, FaEnvelope } from "react
 const Sidebar = ({ isOpen, onClose }) => {
   return (
     <div
-      className={`fixed top-0 left-0 h-full bg-black  transition-width duration-500 ease-in-out ${isOpen ? "w-42" : "w-16"} overflow-hidden`}
+      className={`fixed top-0 left-0 h-full bg-black  transition-width duration-300 ease-in-out ${isOpen ? "w-42" : "w-16"} overflow-hidden`}
     >
       <div className="flex flex-col items-start">
         {/* Button to toggle sidebar */}

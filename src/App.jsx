@@ -11,7 +11,7 @@ import { useAuth } from "./context/AuthContext";  // Import useAuth hook
 
 function App() {
 
-  const { login, logout, user, isLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false); // Sidebar is initially close
 
   const toggleSidebar = () => {
@@ -53,7 +53,7 @@ function App() {
         {isLoggedIn && < Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />}
 
         {/* Main Content Area */}
-        <div className={`flex-1 ml-${sidebarOpen ? '64' : '20'} flex-col h-screen w-full`}>
+        <div className={`flex-1 flex-col h-screen w-full transition-all duration-300 ease-in-out`}>
           <div className={'h-[10%] '}>
             <Header toggleSidebar={toggleSidebar} />
           </div>
