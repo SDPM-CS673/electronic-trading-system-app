@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const apiOrigin = "https://trade-match-maintain-api.onrender.com";
-const apiOrigins = {
+export const apiOrigins = {
     "team1": "https://trade-match-maintain-api.onrender.com",
     "team2": "https://trade-match-maintain-api.onrender.com",
     "team3": "https://trade-match-maintain-api.onrender.com",
-    "team4": "https://trade-match-maintain-api.onrender.com",
+    "team4": "https://cs673backend.onrender.com",
 }
 
 /**
