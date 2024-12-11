@@ -25,17 +25,17 @@ const Sidebar = ({ isOpen, onClose }) => {
             </li>
             <li>
               <a href="/category" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
-                {isOpen ? <span className="flex flex-row"> <FaCogs size={20} /><span  className="pl-4">Product</span> </span> : <FaCogs size={20} />}
+                {isOpen ? <span className="flex flex-row"> <FaCogs size={20} /><span className="pl-4">Product</span> </span> : <FaCogs size={20} />}
               </a>
             </li>
             <li>
-              <a href="/products" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
-                {isOpen ? <span className="flex flex-row"> <FaInfoCircle size={20} /> <span  className="pl-4">Category</span> </span> : <FaInfoCircle size={20} />}
+              <a href="/product" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
+                {isOpen ? <span className="flex flex-row"> <FaInfoCircle size={20} /> <span className="pl-4">Category</span> </span> : <FaInfoCircle size={20} />}
               </a>
             </li>
             <li>
-              <a href="#contact" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
-                {isOpen ? <span className="flex flex-row"> <FaEnvelope size={20} /><span  className="pl-4">Market Data</span> </span> : <FaEnvelope size={20} />}
+              <a href="/marketdata" className="text-white px-4 py-2 flex items-center space-x-2 hover:bg-gray-700">
+                {isOpen ? <span className="flex flex-row"> <FaEnvelope size={20} /><span className="pl-4">Market Data</span> </span> : <FaEnvelope size={20} />}
               </a>
             </li>
           </ul>
