@@ -24,6 +24,19 @@ const MarketData = () => {
             setEndDate(today.toISOString().split("T")[0]);
         }
 
+        // Fetch data every 2 minutes if the active tab is "Live"
+        let intervalId;
+        if (activeTab === "Live") {
+            intervalId = setInterval(() => {
+                fetchMarketData();
+            }, 120000); // 2 minutes in milliseconds
+        }
+
+        return () => {
+            // Clear the interval when the component is unmounted or tab changes
+            clearInterval(intervalId);
+        };
+
     }, [activeTab]);
 
     const fetchMarketData = () => {
