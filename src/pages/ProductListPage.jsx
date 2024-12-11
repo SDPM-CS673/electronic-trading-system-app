@@ -112,9 +112,16 @@ const ProductListPage = () => {
 
   return (
     <div className="bg-gray-200 text-white min-h-screen w-full p-6">
-      <h1 className="text-4xl font-bold text-black mb-8">
-        <div>Hi, {userName}.</div>
-        <div className="my-4">Welcome to UniTrade</div>
+      <h1 className="text-4xl  text-black mb-8">
+        <div>Hi, {userName}</div>
+        <div className="my-4">
+          <p className="font-bold">Welcome to UniTrade!</p>
+          <br/>
+          <p className="text-2xl">Your one-stop platform for premium materials and efficient trading solutions. 
+            <br/>
+            Explore our curated products and tools to elevate your business effortlessly!</p>
+
+        </div>
       </h1>
       <div className="mx-auto">
         {categories.filter(e => e.products.length > 0).map((category) => (
