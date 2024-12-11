@@ -43,25 +43,43 @@ const MarketData = () => {
 
     useEffect(() => {
         filterTableData();
-    }, [searchText, startDate, endDate]);
+    }, [searchText]);
+
+    const resetDates = () => {
+        setStartDate("");
+        setEndDate("");
+        setSearchText("");
+    }
+
+    const dateChange = (e, type) => {
+        if (type === "start") {
+            setStartDate(e.target.value);
+        }
+        else {
+            setEndDate(e.target.value);
+        }
+        if (!startDate && !endDate) {
+            filterTableData();
+        }
+    }
 
     return (
         <div className="p-6 bg-gray-50">
             <div className="text-4xl font-bold text-gray-900 pb-6">Market Data</div>
 
             {/* Tabs */}
-            <div className="flex space-x-4 mb-6">
+            <div className="flex mb-6">
                 <Button
                     className={`${activeTab === "Live" ? "bg-blue-600" : ""
                         }`}
-                    onClick={() => { setActiveTab("Live"); setSearchText("") }}
+                    onClick={() => { setActiveTab("Live"); resetDates("") }}
                 >
                     Live
                 </Button>
                 <Button
                     className={`${activeTab === "Historic" ? "bg-blue-600" : ""
                         }`}
-                    onClick={() => { setActiveTab("Historic"); setSearchText("") }}
+                    onClick={() => { setActiveTab("Historic"); resetDates("") }}
                 >
                     Historic
                 </Button>
@@ -84,7 +102,9 @@ const MarketData = () => {
                             <Input
                                 type="date"
                                 value={startDate}
-                                onChange={(e) => setStartDate(e)}
+                                max={new Date().toISOString().split("T")[0]}
+
+                                onChange={(e) => dateChange(e, "start")}
                                 label="Enter Start Date"
                             />
                         </div>
@@ -92,7 +112,8 @@ const MarketData = () => {
                             <Input
                                 type="date"
                                 value={endDate}
-                                onChange={(e) => setEndDate(e)}
+                                min={new Date(new Date().setMonth(new Date().getMonth() - 3)).toISOString().split("T")[0]}
+                                onChange={(e) => dateChange(e, "end")}
                                 label="Enter End Date"
                             />
                         </div>
