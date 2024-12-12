@@ -41,7 +41,7 @@ const ProductListPage = () => {
 
   const ProductCard = ({ product }) => {
     return (
-      <Link to={`/trades/list?product=${encodeProductData(product)}`}>
+      <Link to={`/orders/list?product=${encodeProductData(product)}`}>
         <div className="rounded-lg bg-white shadow-md p-4  min-w-60 flex-shrink-0 transition-all hover:cursor-pointer">
           <h3 className="text-lg font-bold text-black mb-2">{product.name}</h3>
           <ul className="text-sm text-black">
