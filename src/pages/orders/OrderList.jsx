@@ -3,12 +3,26 @@ import { post } from "../../services/api-call.service";
 import { Button, Card, Dialog, Input, Option, Select, Typography } from "@material-tailwind/react";
 import OrderEntry from "./OrderEntry";
 
+import { useLocation } from 'react-router-dom';
+
+const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+};
 const OrderList = () => {
     const [orderList, setOrderList] = useState([]);
     const [openOrderEntry, setOpenOrderEntry] = useState(false);
-    const TABLE_HEAD = ["Product Category", "Product Name", "Trade Date", "Type", "Quantity", "Price", "Status", "Action"];
+    const [productName, setProductName] = useState("");
+    const query = useQuery();
+
+    const TABLE_HEAD = ["Product Category", "Product Name", "Order Date", "Type", "Quantity", "Price", "Status", "Action"];
 
     useEffect(() => {
+        const encodedProduct = query.get('product');
+        const product = encodedProduct ? JSON.parse(atob(encodedProduct)) : null;
+        if (product) {
+            setOpenOrderEntry(true);
+            setProductName(product.name);   
+        }
         getOrderList();
     }, []);
 
@@ -220,7 +234,7 @@ const OrderList = () => {
                 </Card>
             </div>
 
-            <Dialog open={openOrderEntry} handler={() => {openCloseOrderEntry(!openOrderEntry)}} size="sm">
+            <Dialog open={openOrderEntry} handler={() => { openCloseOrderEntry(!openOrderEntry) }} size="sm">
                 <OrderEntry close={onDialogClose}/>
             </Dialog>
         </>
