@@ -95,7 +95,7 @@ const OrderEntry = ({ close }) => {
                                 className: "before:content-none after:content-none",
                             }} name="product_name" id="product_name" onChange={(e) => { handleChange(e, "product_name") }}>
                             {products.map((product, index) => (
-                                <Option value={product.id}>{product.name}</Option>
+                                <Option value={product.name}>{product.name}</Option>
                             ))}
                         </Select>
                         <Typography variant="h6" color="blue-gray" className="-mb-3">
